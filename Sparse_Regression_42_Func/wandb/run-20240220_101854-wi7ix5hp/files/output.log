@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "E:\Independent-Study\Sparse_Regression_42_Func\utils.py", line 54, in training_loop
+    model = MyNetwork(run_seed)
+            ^^^^^^^^^^^^^^^^^^^
+  File "E:\Independent-Study\Sparse_Regression_42_Func\model.py", line 95, in __init__
+    torch.manual_seed(seed)
+  File "C:\Users\kshit\AppData\Local\Programs\Python\Python311\Lib\site-packages\torch\random.py", line 36, in manual_seed
+    seed = int(seed)
+           ^^^^^^^^^
+TypeError: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'

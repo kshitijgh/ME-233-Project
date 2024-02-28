@@ -1,0 +1,53 @@
+{
+    "os": "Windows-10-10.0.22621-SP0",
+    "python": "3.11.1",
+    "heartbeatAt": "2024-02-20T18:20:02.019204",
+    "startedAt": "2024-02-20T18:20:00.188332",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "E:\\Independent-Study\\Sparse_Regression_42_Func\\main.py",
+    "codePathLocal": "main.py",
+    "codePath": "Sparse_Regression_42_Func\\main.py",
+    "git": {
+        "remote": "https://github.com/kshitijgh/Independent-Study.git",
+        "commit": "05ce356a5c6936464535694c2da9e41512e59c80"
+    },
+    "email": "kshitijg64@gmail.com",
+    "root": "E:/Independent-Study",
+    "host": "DESKTOP-75LIPDN",
+    "username": "kshit",
+    "executable": "C:\\Users\\kshit\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+    "cpu_count": 6,
+    "cpu_count_logical": 12,
+    "cpu_freq": {
+        "current": 2208.0,
+        "min": 0.0,
+        "max": 2208.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2208.0,
+            "min": 0.0,
+            "max": 2208.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 45.241207122802734,
+            "used": 9.242523193359375
+        }
+    },
+    "gpu": "NVIDIA GeForce GTX 1050 Ti with Max-Q Design",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce GTX 1050 Ti with Max-Q Design",
+            "memory_total": 4294967296
+        }
+    ],
+    "memory": {
+        "total": 7.720375061035156
+    }
+}

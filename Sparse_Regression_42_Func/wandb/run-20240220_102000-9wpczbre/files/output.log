@@ -1,0 +1,237 @@
+Hi
+Epoch [1/200] Loss: 0.61655741 mse_loss: 0.61655741 reg_loss: 0.22991276
+Epoch [2/200] Loss: 0.21268106 mse_loss: 0.21268106 reg_loss: 0.23175950
+Epoch [3/200] Loss: 0.14824502 mse_loss: 0.14824502 reg_loss: 0.23097372
+Epoch [4/200] Loss: 0.11800829 mse_loss: 0.11800829 reg_loss: 0.23075166
+Epoch [5/200] Loss: 0.09930980 mse_loss: 0.09930980 reg_loss: 0.23070960
+Epoch [6/200] Loss: 0.08707086 mse_loss: 0.08707086 reg_loss: 0.23063550
+Epoch [7/200] Loss: 0.07866359 mse_loss: 0.07866359 reg_loss: 0.23051218
+Epoch [8/200] Loss: 0.07228775 mse_loss: 0.07228775 reg_loss: 0.23035904
+Epoch [9/200] Loss: 0.06694759 mse_loss: 0.06694759 reg_loss: 0.23017853
+Epoch [10/200] Loss: 0.06220567 mse_loss: 0.06220567 reg_loss: 0.22998952
+Epoch [11/200] Loss: 0.05789228 mse_loss: 0.05789228 reg_loss: 0.22979335
+Epoch [12/200] Loss: 0.05394070 mse_loss: 0.05394070 reg_loss: 0.22958964
+Epoch [13/200] Loss: 0.05031998 mse_loss: 0.05031998 reg_loss: 0.22938137
+Epoch [14/200] Loss: 0.04701023 mse_loss: 0.04701023 reg_loss: 0.22918702
+Epoch [15/200] Loss: 0.04399415 mse_loss: 0.04399415 reg_loss: 0.22900143
+Epoch [16/200] Loss: 0.04125379 mse_loss: 0.04125379 reg_loss: 0.22881177
+Epoch [17/200] Loss: 0.03876649 mse_loss: 0.03876649 reg_loss: 0.22861980
+Epoch [18/200] Loss: 0.03650782 mse_loss: 0.03650782 reg_loss: 0.22842741
+Epoch [19/200] Loss: 0.03446337 mse_loss: 0.03446337 reg_loss: 0.22823743
+Epoch [20/200] Loss: 0.03262949 mse_loss: 0.03262949 reg_loss: 0.22807601
+Epoch [21/200] Loss: 0.03099822 mse_loss: 0.03099822 reg_loss: 0.22793129
+Epoch [22/200] Loss: 0.02955318 mse_loss: 0.02955318 reg_loss: 0.22780041
+Epoch [23/200] Loss: 0.02828118 mse_loss: 0.02828118 reg_loss: 0.22768468
+Epoch [24/200] Loss: 0.02717726 mse_loss: 0.02717726 reg_loss: 0.22756838
+Epoch [25/200] Loss: 0.02623733 mse_loss: 0.02623733 reg_loss: 0.22745136
+Epoch [26/200] Loss: 0.02545106 mse_loss: 0.02545106 reg_loss: 0.22733359
+Epoch [27/200] Loss: 0.02480159 mse_loss: 0.02480159 reg_loss: 0.22721482
+Epoch [28/200] Loss: 0.02426787 mse_loss: 0.02426787 reg_loss: 0.22709472
+Epoch [29/200] Loss: 0.02382843 mse_loss: 0.02382843 reg_loss: 0.22697293
+Epoch [30/200] Loss: 0.02346413 mse_loss: 0.02346413 reg_loss: 0.22685097
+Epoch [31/200] Loss: 0.02315855 mse_loss: 0.02315855 reg_loss: 0.22673787
+Epoch [32/200] Loss: 0.02289728 mse_loss: 0.02289728 reg_loss: 0.22662135
+Epoch [33/200] Loss: 0.02266828 mse_loss: 0.02266828 reg_loss: 0.22650044
+Epoch [34/200] Loss: 0.02246234 mse_loss: 0.02246234 reg_loss: 0.22637533
+Epoch [35/200] Loss: 0.02227315 mse_loss: 0.02227315 reg_loss: 0.22624646
+Epoch [36/200] Loss: 0.02209674 mse_loss: 0.02209674 reg_loss: 0.22611406
+Epoch [37/200] Loss: 0.02193077 mse_loss: 0.02193077 reg_loss: 0.22597865
+Epoch [38/200] Loss: 0.02177392 mse_loss: 0.02177392 reg_loss: 0.22584088
+Epoch [39/200] Loss: 0.02162534 mse_loss: 0.02162534 reg_loss: 0.22570480
+Epoch [40/200] Loss: 0.02148463 mse_loss: 0.02148463 reg_loss: 0.22556796
+Epoch [41/200] Loss: 0.02135145 mse_loss: 0.02135145 reg_loss: 0.22542818
+Epoch [42/200] Loss: 0.02122554 mse_loss: 0.02122554 reg_loss: 0.22528552
+Epoch [43/200] Loss: 0.02110669 mse_loss: 0.02110669 reg_loss: 0.22513989
+Epoch [44/200] Loss: 0.02099469 mse_loss: 0.02099469 reg_loss: 0.22499151
+Epoch [45/200] Loss: 0.02088924 mse_loss: 0.02088924 reg_loss: 0.22484045
+Epoch [46/200] Loss: 0.02079005 mse_loss: 0.02079005 reg_loss: 0.22468708
+Epoch [47/200] Loss: 0.02069681 mse_loss: 0.02069681 reg_loss: 0.22453152
+Epoch [48/200] Loss: 0.02060909 mse_loss: 0.02060909 reg_loss: 0.22437397
+Epoch [49/200] Loss: 0.02052655 mse_loss: 0.02052655 reg_loss: 0.22421461
+Epoch [50/200] Loss: 0.02044880 mse_loss: 0.02044880 reg_loss: 0.22405349
+Epoch [51/200] Loss: 0.02037546 mse_loss: 0.02037546 reg_loss: 0.22389052
+Epoch [52/200] Loss: 0.02030621 mse_loss: 0.02030621 reg_loss: 0.22372560
+Epoch [53/200] Loss: 0.02024072 mse_loss: 0.02024072 reg_loss: 0.22355872
+Epoch [54/200] Loss: 0.02017870 mse_loss: 0.02017870 reg_loss: 0.22338976
+Epoch [55/200] Loss: 0.02011988 mse_loss: 0.02011988 reg_loss: 0.22321848
+Epoch [56/200] Loss: 0.02006405 mse_loss: 0.02006405 reg_loss: 0.22304489
+Epoch [57/200] Loss: 0.02001095 mse_loss: 0.02001095 reg_loss: 0.22287132
+Epoch [58/200] Loss: 0.01996040 mse_loss: 0.01996040 reg_loss: 0.22270754
+Epoch [59/200] Loss: 0.01991222 mse_loss: 0.01991222 reg_loss: 0.22254339
+Epoch [60/200] Loss: 0.01986625 mse_loss: 0.01986625 reg_loss: 0.22237688
+Epoch [61/200] Loss: 0.01982233 mse_loss: 0.01982233 reg_loss: 0.22220791
+Epoch [62/200] Loss: 0.01978035 mse_loss: 0.01978035 reg_loss: 0.22203609
+Epoch [63/200] Loss: 0.01974017 mse_loss: 0.01974017 reg_loss: 0.22186133
+Epoch [64/200] Loss: 0.01970166 mse_loss: 0.01970166 reg_loss: 0.22168337
+Epoch [65/200] Loss: 0.01966474 mse_loss: 0.01966474 reg_loss: 0.22150181
+Epoch [66/200] Loss: 0.01962929 mse_loss: 0.01962929 reg_loss: 0.22131648
+Epoch [67/200] Loss: 0.01959522 mse_loss: 0.01959522 reg_loss: 0.22112688
+Epoch [68/200] Loss: 0.01956244 mse_loss: 0.01956244 reg_loss: 0.22093260
+Epoch [69/200] Loss: 0.01953086 mse_loss: 0.01953086 reg_loss: 0.22073312
+Epoch [70/200] Loss: 0.01950043 mse_loss: 0.01950043 reg_loss: 0.22052798
+Epoch [71/200] Loss: 0.01947106 mse_loss: 0.01947106 reg_loss: 0.22031675
+Epoch [72/200] Loss: 0.01944269 mse_loss: 0.01944269 reg_loss: 0.22010065
+Epoch [73/200] Loss: 0.01941527 mse_loss: 0.01941527 reg_loss: 0.21988013
+Epoch [74/200] Loss: 0.01938880 mse_loss: 0.01938880 reg_loss: 0.21965205
+Epoch [75/200] Loss: 0.01936321 mse_loss: 0.01936321 reg_loss: 0.21941615
+Epoch [76/200] Loss: 0.01933851 mse_loss: 0.01933851 reg_loss: 0.21917319
+Epoch [77/200] Loss: 0.01931466 mse_loss: 0.01931466 reg_loss: 0.21892452
+Epoch [78/200] Loss: 0.01929162 mse_loss: 0.01929162 reg_loss: 0.21867203
+Epoch [79/200] Loss: 0.01926936 mse_loss: 0.01926936 reg_loss: 0.21841805
+Epoch [80/200] Loss: 0.01924784 mse_loss: 0.01924784 reg_loss: 0.21816369
+Epoch [81/200] Loss: 0.01922709 mse_loss: 0.01922709 reg_loss: 0.21790930
+Epoch [82/200] Loss: 0.01920710 mse_loss: 0.01920710 reg_loss: 0.21765566
+Epoch [83/200] Loss: 0.01918789 mse_loss: 0.01918789 reg_loss: 0.21740451
+Epoch [84/200] Loss: 0.01916951 mse_loss: 0.01916951 reg_loss: 0.21715781
+Epoch [85/200] Loss: 0.01915201 mse_loss: 0.01915201 reg_loss: 0.21691767
+Epoch [86/200] Loss: 0.01913538 mse_loss: 0.01913538 reg_loss: 0.21668644
+Epoch [87/200] Loss: 0.01911960 mse_loss: 0.01911960 reg_loss: 0.21646620
+Epoch [88/200] Loss: 0.01910459 mse_loss: 0.01910459 reg_loss: 0.21625920
+Epoch [89/200] Loss: 0.01909028 mse_loss: 0.01909028 reg_loss: 0.21606711
+Epoch [90/200] Loss: 0.01907649 mse_loss: 0.01907649 reg_loss: 0.21589027
+Epoch [91/200] Loss: 0.01906315 mse_loss: 0.01906315 reg_loss: 0.21572698
+Epoch [92/200] Loss: 0.01905013 mse_loss: 0.01905013 reg_loss: 0.21557322
+Epoch [93/200] Loss: 0.01903742 mse_loss: 0.01903742 reg_loss: 0.21542452
+Epoch [94/200] Loss: 0.01902499 mse_loss: 0.01902499 reg_loss: 0.21527767
+Epoch [95/200] Loss: 0.01901283 mse_loss: 0.01901283 reg_loss: 0.21513113
+Epoch [96/200] Loss: 0.01900095 mse_loss: 0.01900095 reg_loss: 0.21498452
+Epoch [97/200] Loss: 0.01898933 mse_loss: 0.01898933 reg_loss: 0.21483791
+Epoch [98/200] Loss: 0.01897797 mse_loss: 0.01897797 reg_loss: 0.21469304
+Epoch [99/200] Loss: 0.01896684 mse_loss: 0.01896684 reg_loss: 0.21455017
+Epoch [100/200] Loss: 0.01895594 mse_loss: 0.01895594 reg_loss: 0.21440762
+Epoch [101/200] Loss: 0.01894529 mse_loss: 0.01894529 reg_loss: 0.21426491
+Epoch [102/200] Loss: 0.01893484 mse_loss: 0.01893484 reg_loss: 0.21412192
+Epoch [103/200] Loss: 0.01892460 mse_loss: 0.01892460 reg_loss: 0.21397857
+Epoch [104/200] Loss: 0.01891457 mse_loss: 0.01891457 reg_loss: 0.21383481
+Epoch [105/200] Loss: 0.01890558 mse_loss: 0.01890558 reg_loss: 0.21372595
+Epoch [106/200] Loss: 0.01889502 mse_loss: 0.01889502 reg_loss: 0.21355163
+Epoch [107/200] Loss: 0.01888556 mse_loss: 0.01888556 reg_loss: 0.21340139
+Epoch [108/200] Loss: 0.01887623 mse_loss: 0.01887623 reg_loss: 0.21325614
+Epoch [109/200] Loss: 0.01886708 mse_loss: 0.01886708 reg_loss: 0.21311113
+Epoch [110/200] Loss: 0.01885809 mse_loss: 0.01885809 reg_loss: 0.21296600
+Epoch [111/200] Loss: 0.01884923 mse_loss: 0.01884923 reg_loss: 0.21282060
+Epoch [112/200] Loss: 0.01884055 mse_loss: 0.01884055 reg_loss: 0.21267550
+Epoch [113/200] Loss: 0.01883102 mse_loss: 0.01883102 reg_loss: 0.21256485
+Epoch [114/200] Loss: 0.01882353 mse_loss: 0.01882353 reg_loss: 0.21238484
+Epoch [115/200] Loss: 0.01881524 mse_loss: 0.01881524 reg_loss: 0.21223870
+Epoch [116/200] Loss: 0.01880707 mse_loss: 0.01880707 reg_loss: 0.21209390
+Epoch [117/200] Loss: 0.01879901 mse_loss: 0.01879901 reg_loss: 0.21194855
+Epoch [118/200] Loss: 0.01879107 mse_loss: 0.01879107 reg_loss: 0.21180242
+Epoch [119/200] Loss: 0.01878323 mse_loss: 0.01878323 reg_loss: 0.21165548
+Epoch [120/200] Loss: 0.01877550 mse_loss: 0.01877550 reg_loss: 0.21150766
+Epoch [121/200] Loss: 0.01876925 mse_loss: 0.01876925 reg_loss: 0.21137054
+Epoch [122/200] Loss: 0.01876036 mse_loss: 0.01876036 reg_loss: 0.21122327
+Epoch [123/200] Loss: 0.01875286 mse_loss: 0.01875286 reg_loss: 0.21106246
+Epoch [124/200] Loss: 0.01874550 mse_loss: 0.01874550 reg_loss: 0.21091013
+Epoch [125/200] Loss: 0.01873860 mse_loss: 0.01873860 reg_loss: 0.21076398
+Epoch [126/200] Loss: 0.01873118 mse_loss: 0.01873118 reg_loss: 0.21061115
+Epoch [127/200] Loss: 0.01872397 mse_loss: 0.01872397 reg_loss: 0.21045696
+Epoch [128/200] Loss: 0.01871676 mse_loss: 0.01871676 reg_loss: 0.21030048
+Epoch [129/200] Loss: 0.01870982 mse_loss: 0.01870982 reg_loss: 0.21014411
+Epoch [130/200] Loss: 0.01870298 mse_loss: 0.01870298 reg_loss: 0.20998691
+Epoch [131/200] Loss: 0.01869612 mse_loss: 0.01869612 reg_loss: 0.20982752
+Epoch [132/200] Loss: 0.01868936 mse_loss: 0.01868936 reg_loss: 0.20966744
+Epoch [133/200] Loss: 0.01868266 mse_loss: 0.01868266 reg_loss: 0.20950598
+Epoch [134/200] Loss: 0.01867599 mse_loss: 0.01867599 reg_loss: 0.20934310
+Epoch [135/200] Loss: 0.01866938 mse_loss: 0.01866938 reg_loss: 0.20917894
+Epoch [136/200] Loss: 0.01866281 mse_loss: 0.01866281 reg_loss: 0.20901319
+Epoch [137/200] Loss: 0.01865627 mse_loss: 0.01865627 reg_loss: 0.20884598
+Epoch [138/200] Loss: 0.01864978 mse_loss: 0.01864978 reg_loss: 0.20867719
+Epoch [139/200] Loss: 0.01864331 mse_loss: 0.01864331 reg_loss: 0.20850673
+Epoch [140/200] Loss: 0.01863689 mse_loss: 0.01863689 reg_loss: 0.20833453
+Epoch [141/200] Loss: 0.01863048 mse_loss: 0.01863048 reg_loss: 0.20816045
+Epoch [142/200] Loss: 0.01862410 mse_loss: 0.01862410 reg_loss: 0.20798439
+Epoch [143/200] Loss: 0.01861774 mse_loss: 0.01861774 reg_loss: 0.20780630
+Epoch [144/200] Loss: 0.01861138 mse_loss: 0.01861138 reg_loss: 0.20762604
+Epoch [145/200] Loss: 0.01860505 mse_loss: 0.01860505 reg_loss: 0.20744337
+Epoch [146/200] Loss: 0.01859871 mse_loss: 0.01859871 reg_loss: 0.20725877
+Epoch [147/200] Loss: 0.01859238 mse_loss: 0.01859238 reg_loss: 0.20707371
+Epoch [148/200] Loss: 0.01858605 mse_loss: 0.01858605 reg_loss: 0.20688742
+Epoch [149/200] Loss: 0.01857971 mse_loss: 0.01857971 reg_loss: 0.20669860
+Epoch [150/200] Loss: 0.01857336 mse_loss: 0.01857336 reg_loss: 0.20650687
+Epoch [151/200] Loss: 0.01856700 mse_loss: 0.01856700 reg_loss: 0.20631201
+Epoch [152/200] Loss: 0.01856061 mse_loss: 0.01856061 reg_loss: 0.20611411
+Epoch [153/200] Loss: 0.01855421 mse_loss: 0.01855421 reg_loss: 0.20591333
+Epoch [154/200] Loss: 0.01854778 mse_loss: 0.01854778 reg_loss: 0.20571032
+Epoch [155/200] Loss: 0.01854133 mse_loss: 0.01854133 reg_loss: 0.20550604
+Epoch [156/200] Loss: 0.01853486 mse_loss: 0.01853486 reg_loss: 0.20530198
+Epoch [157/200] Loss: 0.01852834 mse_loss: 0.01852834 reg_loss: 0.20510027
+Epoch [158/200] Loss: 0.01852180 mse_loss: 0.01852180 reg_loss: 0.20490320
+Epoch [159/200] Loss: 0.01851521 mse_loss: 0.01851521 reg_loss: 0.20471276
+Epoch [160/200] Loss: 0.01850856 mse_loss: 0.01850856 reg_loss: 0.20452966
+Epoch [161/200] Loss: 0.01850191 mse_loss: 0.01850191 reg_loss: 0.20435346
+Epoch [162/200] Loss: 0.01849522 mse_loss: 0.01849522 reg_loss: 0.20418202
+Epoch [163/200] Loss: 0.01848850 mse_loss: 0.01848850 reg_loss: 0.20401225
+Epoch [164/200] Loss: 0.01848176 mse_loss: 0.01848176 reg_loss: 0.20384206
+Epoch [165/200] Loss: 0.01847498 mse_loss: 0.01847498 reg_loss: 0.20367029
+Epoch [166/200] Loss: 0.01846817 mse_loss: 0.01846817 reg_loss: 0.20349622
+Epoch [167/200] Loss: 0.01846132 mse_loss: 0.01846132 reg_loss: 0.20331962
+Epoch [168/200] Loss: 0.01845441 mse_loss: 0.01845441 reg_loss: 0.20314012
+Epoch [169/200] Loss: 0.01844745 mse_loss: 0.01844745 reg_loss: 0.20295745
+Epoch [170/200] Loss: 0.01844042 mse_loss: 0.01844042 reg_loss: 0.20277133
+Epoch [171/200] Loss: 0.01843332 mse_loss: 0.01843332 reg_loss: 0.20258124
+Epoch [172/200] Loss: 0.01842615 mse_loss: 0.01842615 reg_loss: 0.20238695
+Epoch [173/200] Loss: 0.01841891 mse_loss: 0.01841891 reg_loss: 0.20218806
+Epoch [174/200] Loss: 0.01841160 mse_loss: 0.01841160 reg_loss: 0.20198401
+Epoch [175/200] Loss: 0.01840424 mse_loss: 0.01840424 reg_loss: 0.20177445
+Epoch [176/200] Loss: 0.01839684 mse_loss: 0.01839684 reg_loss: 0.20155914
+Epoch [177/200] Loss: 0.01839104 mse_loss: 0.01839104 reg_loss: 0.20135878
+Epoch [178/200] Loss: 0.01838211 mse_loss: 0.01838211 reg_loss: 0.20111468
+Epoch [179/200] Loss: 0.01837488 mse_loss: 0.01837488 reg_loss: 0.20088516
+Epoch [180/200] Loss: 0.01836427 mse_loss: 0.01836427 reg_loss: 0.20068187
+Epoch [181/200] Loss: 0.01836108 mse_loss: 0.01836108 reg_loss: 0.20041804
+Epoch [182/200] Loss: 0.01835425 mse_loss: 0.01835425 reg_loss: 0.20018123
+Epoch [183/200] Loss: 0.01834752 mse_loss: 0.01834752 reg_loss: 0.19994558
+Epoch [184/200] Loss: 0.01834097 mse_loss: 0.01834097 reg_loss: 0.19971006
+Epoch [185/200] Loss: 0.01833468 mse_loss: 0.01833468 reg_loss: 0.19948754
+Epoch [186/200] Loss: 0.01833314 mse_loss: 0.01833314 reg_loss: 0.19927313
+Epoch [187/200] Loss: 0.01832168 mse_loss: 0.01832168 reg_loss: 0.19900614
+Epoch [188/200] Loss: 0.01831539 mse_loss: 0.01831539 reg_loss: 0.19876984
+Epoch [189/200] Loss: 0.01830916 mse_loss: 0.01830916 reg_loss: 0.19853553
+Epoch [190/200] Loss: 0.01830286 mse_loss: 0.01830286 reg_loss: 0.19830104
+Epoch [191/200] Loss: 0.01829651 mse_loss: 0.01829651 reg_loss: 0.19806704
+Epoch [192/200] Loss: 0.01829022 mse_loss: 0.01829022 reg_loss: 0.19784375
+Epoch [193/200] Loss: 0.01828394 mse_loss: 0.01828394 reg_loss: 0.19762144
+Epoch [194/200] Loss: 0.01827765 mse_loss: 0.01827765 reg_loss: 0.19739758
+Epoch [195/200] Loss: 0.01827132 mse_loss: 0.01827132 reg_loss: 0.19717340
+Epoch [196/200] Loss: 0.01827556 mse_loss: 0.01827556 reg_loss: 0.19700143
+Epoch [197/200] Loss: 0.01825860 mse_loss: 0.01825860 reg_loss: 0.19672002
+Epoch [198/200] Loss: 0.01825211 mse_loss: 0.01825211 reg_loss: 0.19647697
+Epoch [199/200] Loss: 0.01824570 mse_loss: 0.01824570 reg_loss: 0.19623910
+Epoch [200/200] Loss: 0.01823917 mse_loss: 0.01823917 reg_loss: 0.19599865
+Training finished
+Testing Loss: 0.06688507
+batch_norm_input.weight
+tensor([ 4.3028e-01,  9.1535e-01,  1.1394e+00,  3.2451e-01,  8.7341e-01,
+         8.9508e-01,  9.4724e-01,  4.7962e-01,  7.6399e-01,  8.7890e-01,
+         7.9223e-01,  9.6367e-01,  9.9653e-01,  2.3136e-01,  7.9566e-01,
+         1.1048e+00, -3.7041e-09,  4.1372e-01,  8.6601e-01,  8.9960e-01,
+         8.0596e-01,  7.6260e-01,  8.3295e-01,  5.6440e-01,  6.9633e-01,
+         8.3774e-01,  4.8475e-01,  5.1405e-01,  6.3604e-01,  3.0697e-01,
+         2.9675e-01,  3.9884e-01,  4.6977e-01, -4.0722e-04,  4.9716e-01,
+         4.1701e-01,  1.3860e-01,  9.6993e-01,  1.2973e+00,  8.1791e-01,
+         8.1177e-01,  6.6796e-01])
+batch_norm_input.bias
+tensor([-3.4602e-02,  2.0872e-01, -3.0027e-01,  3.5477e-02, -2.3726e-01,
+         1.5788e-01, -2.4784e-01,  1.6599e-04,  1.9679e-01, -2.3704e-01,
+         2.1459e-01,  2.1064e-01,  2.4117e-01, -1.4146e-02,  1.8235e-01,
+        -2.5142e-01, -1.4039e-08, -5.1503e-02, -2.4046e-01,  2.4296e-01,
+        -1.9055e-01,  2.5814e-02, -2.3644e-01,  1.1887e-01, -2.2238e-01,
+        -6.2150e-02, -4.8896e-02, -1.4245e-01,  1.8069e-01, -8.0203e-02,
+         2.9069e-02,  1.1806e-03, -4.5161e-02, -1.0588e-04, -9.2237e-02,
+        -2.5299e-02, -4.1394e-02,  2.6940e-01, -4.1778e-03, -2.5102e-01,
+         2.9554e-01, -5.7896e-02])
+input_layer.weight
+tensor([[-5.1856e-02,  2.6406e-01, -2.4110e-01,  4.5018e-03, -7.6960e-02,
+          9.1509e-02, -2.0775e-01, -3.1028e-02,  1.5288e-01, -2.1952e-01,
+          2.0409e-01,  1.3112e-01,  3.2717e-01, -2.6024e-03,  9.4779e-02,
+         -2.2587e-01,  5.9243e-09, -2.4111e-02, -1.2052e-01,  1.1076e-01,
+         -8.4138e-02,  4.3342e-02, -1.2060e-01,  4.1801e-02, -9.0141e-02,
+          7.5351e-02,  1.3301e-02, -1.9429e-02,  2.0326e-02, -1.3189e-02,
+          2.8740e-02,  1.6745e-02, -3.2054e-02, -1.9087e-04,  2.6399e-02,
+          8.3154e-03,  3.3099e-03,  5.8041e-01, -3.0491e-01, -2.0729e-01,
+          3.1888e-01, -4.4746e-02]])
+E:\Independent-Study\Sparse_Regression_42_Func\utils.py:131: UserWarning: Starting a Matplotlib GUI outside of the main thread will likely fail.
+  fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+E:\Independent-Study\Sparse_Regression_42_Func\utils.py:151: UserWarning: Starting a Matplotlib GUI outside of the main thread will likely fail.
+  plt.show()

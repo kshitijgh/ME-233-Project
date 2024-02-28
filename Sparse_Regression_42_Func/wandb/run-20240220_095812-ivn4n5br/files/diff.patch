@@ -1,0 +1,2536 @@
+Submodule CANNs contains modified content
+diff --git a/CANNs/SKIN/CANN4Skin_main.py b/CANNs/SKIN/CANN4Skin_main.py
+index fb01a87..20fc74f 100644
+--- a/CANNs/SKIN/CANN4Skin_main.py
++++ b/CANNs/SKIN/CANN4Skin_main.py
+@@ -41,9 +41,13 @@ def r2_score_own(Truth, Prediction):
+ 
+ #%% Functions
+ 
+-def Compile_and_fit(modelFit_mode, model_given, input_train, output_train, input_val, output_val, epochs, path_checkpoint):
++def Compile_and_fit(modelFit_mode, model_given, input_train, output_train, input_val, output_val, epochs, path_checkpoint, dWI1_BT):
+     
+     mse_loss = keras.losses.MeanSquaredError()
++
++    def custom_loss():
++        return mse_loss + dWI1_BT
++
+     metrics  =[keras.metrics.MeanSquaredError()]
+     opti1    = tf.optimizers.Adam(learning_rate=0.001)
+     
+@@ -51,6 +55,7 @@ def Compile_and_fit(modelFit_mode, model_given, input_train, output_train, input
+                   optimizer=opti1,
+                   metrics=metrics)
+ 
++    #model_given.compile(loss=custom_loss, optimizer=opti1, metrics=metrics)
+         
+     es_callback = keras.callbacks.EarlyStopping(monitor="loss", min_delta=0, patience=2000, restore_best_weights=True)
+ 
+@@ -125,8 +130,8 @@ if __name__ == "__main__":
+     
+     
+     #%% Init
+-    modelFit_mode_all = ['all', '1', '2', '3', "4", "5"]
+-    #modelFit_mode_all = ['all']
++    #modelFit_mode_all = ['all', '1', '2', '3', "4", "5"]
++    modelFit_mode_all = ['all']
+ 
+     # Training settings
+     epochs = 8000
+@@ -185,7 +190,7 @@ if __name__ == "__main__":
+         
+        
+         Psi_model, terms = StrainEnergy_i5()
+-        model_BT = modelArchitecture_I5(Psi_model, setAlpha, Alpha_init)
++        model_BT, dWI1_BT = modelArchitecture_I5(Psi_model, setAlpha, Alpha_init)
+     
+         
+         with open(Model_summary,'w') as fh:
+@@ -227,7 +232,7 @@ if __name__ == "__main__":
+             
+             model_given, history = Compile_and_fit(modelFit_mode, model_given, input_train, output_train,
+                                                    input_val, output_val,
+-                                                   epochs, path_checkpoint)
++                                                   epochs, path_checkpoint, dWI1_BT)
+             
+             model_given.load_weights(path_checkpoint, by_name=False, skip_mismatch=False)
+             tf.keras.models.save_model(model_given, Save_path, overwrite=True)
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Checkpoints/best_weights.data-00000-of-00001 b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Checkpoints/best_weights.data-00000-of-00001
+deleted file mode 100644
+index 8ea6de8..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Checkpoints/best_weights.data-00000-of-00001 and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Checkpoints/best_weights.index b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Checkpoints/best_weights.index
+deleted file mode 100644
+index 932d1f1..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Checkpoints/best_weights.index and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Checkpoints/checkpoint b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Checkpoints/checkpoint
+deleted file mode 100644
+index 6f558d3..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Checkpoints/checkpoint
++++ /dev/null
+@@ -1,2 +0,0 @@
+-model_checkpoint_path: "best_weights"
+-all_model_checkpoint_paths: "best_weights"
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Config_file.txt b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Config_file.txt
+deleted file mode 100644
+index 020e66c..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Config_file.txt
++++ /dev/null
+@@ -1 +0,0 @@
+-{"1": "1", "R2_x1": 0.9985830377469816, "R2_x2": 0.9694823287096035, "R2_x3": 0.7816889344618314, "R2_x4": 0.86990224166205, "R2_x5": 0.03408874008538487, "R2_y1": 0.9929274487372899, "R2_y2": 0.9032892019490951, "R2_y3": 0.8314196862385623, "R2_y4": 0.8969197978332242, "R2_y5": 0.819597609917529, "alpha_ang": 1.5707963705062866, "weigths": [[-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [3.0860705375671387, 0.10422621667385101], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [1.5175539255142212, 0.09493350982666016], [0.07253126055002213, -0.0], [0.5007386207580566, -0.0], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [1.7224804162979126, 0.006459326483309269]]}
+\ No newline at end of file
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_PI-CANN_MAP_1_cy_1.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_PI-CANN_MAP_1_cy_1.pdf
+deleted file mode 100644
+index da88a6e..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_PI-CANN_MAP_1_cy_1.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 1                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 1
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_PI-CANN_MAP_1_cy_2.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_PI-CANN_MAP_1_cy_2.pdf
+deleted file mode 100644
+index b169057..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_PI-CANN_MAP_1_cy_2.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 2                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 2
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_PI-CANN_MAP_1_cy_3.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_PI-CANN_MAP_1_cy_3.pdf
+deleted file mode 100644
+index 5d95a4c..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_PI-CANN_MAP_1_cy_3.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 3                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 3
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_PI-CANN_MAP_1_cy_4.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_PI-CANN_MAP_1_cy_4.pdf
+deleted file mode 100644
+index b966a3b..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_PI-CANN_MAP_1_cy_4.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 4                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 4
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_PI-CANN_MAP_1_cy_5.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_PI-CANN_MAP_1_cy_5.pdf
+deleted file mode 100644
+index 100e03b..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_PI-CANN_MAP_1_cy_5.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 5                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 5
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_PI-CANN_skin.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_PI-CANN_skin.pdf
+deleted file mode 100644
+index 79fbaca..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_PI-CANN_skin.pdf
++++ /dev/null
+@@ -1,26 +0,0 @@
+-                     0.6          model x  data x                                        1.15
+-
+-                          R2: 0.999                                       stretch y [-]  1.10
+-                          R2: 0.969
+-Cauchy stress [MPa]       R2: 0.782                                                      1.05
+-                          R2: 0.870
+-                     0.3 R2: 0.034                                                       1.00  1.00  1.05 stre1t.1c0h x [-]1.15  1.20
+-
+-                          Ra2ll: 0.731
+-
+-                     0.0                           1.1stretch x [-]  1.2
+-                             1.0
+-
+-                     0.6          model y  data z
+-
+-Cauchy stress [MPa]       R2: 0.993
+-                          R2: 0.903
+-                          R2: 0.831
+-                          R2: 0.897
+-                     0.3 R2: 0.820
+-
+-                          Ra2ll: 0.889
+-
+-                     0.0                           1.1stretch y [-]  1.2
+-                             1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_PI-CANN_skin_solo.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_PI-CANN_skin_solo.pdf
+deleted file mode 100644
+index 8fa6dc4..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_PI-CANN_skin_solo.pdf
++++ /dev/null
+@@ -1,14 +0,0 @@
+-       model x              model y                                                                                  1.15
+-       data x               data y                                                                                   1.10
+-Cauchy stress [kPa]                                                                                                  1.05
+-                                                                                                      stretch y [-]  1.00
+-    R2: 0.999 | Ry2: 0.993
+-                                                                                                                         1.00 1.01 1.02 s1.t0r3etc1h.04 x 1[.-0]5 1.06 1.07 1.08
+-12
+-
+-9
+-
+-6
+-
+-0 1.0                                1.4 stretch x [-]1.6
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_loss_.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_loss_.pdf
+deleted file mode 100644
+index 46a244b..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/Plot_loss_.pdf
++++ /dev/null
+@@ -1,8 +0,0 @@
+-                               model loss
+-
+-      10 3
+-
+-loss
+-
+-      0  1000  2e0p0o0ch                   3000  4000
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/checkpoint b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/checkpoint
+deleted file mode 100644
+index efd0621..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/checkpoint
++++ /dev/null
+@@ -1,2 +0,0 @@
+-model_checkpoint_path: "weights"
+-all_model_checkpoint_paths: "weights"
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/model.h5 b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/model.h5
+deleted file mode 100644
+index a3c69e0..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/model.h5 and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/weights.data-00000-of-00001 b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/weights.data-00000-of-00001
+deleted file mode 100644
+index 8ea6de8..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/weights.data-00000-of-00001 and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/weights.index b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/weights.index
+deleted file mode 100644
+index 932d1f1..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/1/weights.index and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Checkpoints/best_weights.data-00000-of-00001 b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Checkpoints/best_weights.data-00000-of-00001
+deleted file mode 100644
+index f5412d8..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Checkpoints/best_weights.data-00000-of-00001 and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Checkpoints/best_weights.index b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Checkpoints/best_weights.index
+deleted file mode 100644
+index 98843ba..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Checkpoints/best_weights.index and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Checkpoints/checkpoint b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Checkpoints/checkpoint
+deleted file mode 100644
+index 6f558d3..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Checkpoints/checkpoint
++++ /dev/null
+@@ -1,2 +0,0 @@
+-model_checkpoint_path: "best_weights"
+-all_model_checkpoint_paths: "best_weights"
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Config_file.txt b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Config_file.txt
+deleted file mode 100644
+index f4cb80f..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Config_file.txt
++++ /dev/null
+@@ -1 +0,0 @@
+-{"2": "2", "R2_x1": 0.8727770482974001, "R2_x2": 0.9994364121068404, "R2_x3": 0.9234249921401986, "R2_x4": 0.8451167976736461, "R2_x5": 0.15259378663473167, "R2_y1": 0.9228037955335788, "R2_y2": 0.9967020114792472, "R2_y3": 0.957809294562895, "R2_y4": 0.9881233086211598, "R2_y5": 0.9060139525121272, "alpha_ang": 1.5707963705062866, "weigths": [[-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [2.9505362510681152, -0.0], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [1.693026065826416, 0.26898202300071716], [0.07540218532085419, -0.0], [0.5038798451423645, -0.0], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [1.4992738962173462, 0.00977520365267992]]}
+\ No newline at end of file
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_PI-CANN_MAP_2_cy_1.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_PI-CANN_MAP_2_cy_1.pdf
+deleted file mode 100644
+index f22bc37..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_PI-CANN_MAP_2_cy_1.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 1                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 1
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_PI-CANN_MAP_2_cy_2.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_PI-CANN_MAP_2_cy_2.pdf
+deleted file mode 100644
+index fdd015a..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_PI-CANN_MAP_2_cy_2.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 2                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 2
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_PI-CANN_MAP_2_cy_3.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_PI-CANN_MAP_2_cy_3.pdf
+deleted file mode 100644
+index e3af696..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_PI-CANN_MAP_2_cy_3.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 3                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 3
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_PI-CANN_MAP_2_cy_4.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_PI-CANN_MAP_2_cy_4.pdf
+deleted file mode 100644
+index b6e018f..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_PI-CANN_MAP_2_cy_4.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 4                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 4
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_PI-CANN_MAP_2_cy_5.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_PI-CANN_MAP_2_cy_5.pdf
+deleted file mode 100644
+index 58b6d7f..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_PI-CANN_MAP_2_cy_5.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 5                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 5
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_PI-CANN_skin.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_PI-CANN_skin.pdf
+deleted file mode 100644
+index 3dc5439..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_PI-CANN_skin.pdf
++++ /dev/null
+@@ -1,26 +0,0 @@
+-                     0.6          model x  data x                                        1.15
+-
+-                          R2: 0.873                                       stretch y [-]  1.10
+-                          R2: 0.999
+-Cauchy stress [MPa]       R2: 0.923                                                      1.05
+-                          R2: 0.845
+-                     0.3 R2: 0.153                                                       1.00  1.00  1.05 stre1t.1c0h x [-]1.15  1.20
+-
+-                          Ra2ll: 0.759
+-
+-                     0.0                           1.1stretch x [-]  1.2
+-                             1.0
+-
+-                     0.6          model y  data z
+-
+-Cauchy stress [MPa]       R2: 0.923
+-                          R2: 0.997
+-                          R2: 0.958
+-                          R2: 0.988
+-                     0.3 R2: 0.906
+-
+-                          Ra2ll: 0.954
+-
+-                     0.0                           1.1stretch y [-]  1.2
+-                             1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_PI-CANN_skin_solo.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_PI-CANN_skin_solo.pdf
+deleted file mode 100644
+index eadd4d4..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_PI-CANN_skin_solo.pdf
++++ /dev/null
+@@ -1,14 +0,0 @@
+-       model x              model y                                                                                 1.08
+-       data x               data y                                                                                  1.06
+-Cauchy stress [kPa]                                                                                                 1.04
+-                                                                                                     stretch y [-]  1.02
+-    R2: 0.999 | Ry2: 0.997                                                                                          1.00
+-
+-12                                                                                                                     1.000 1.025 1.050 st1r.e07t5ch 1.x100[-] 1.125 1.150 1.175
+-
+-9
+-
+-6
+-
+-0 1.0                                1.4 stretch x [-]1.6
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_loss_.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_loss_.pdf
+deleted file mode 100644
+index b2f424e..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/Plot_loss_.pdf
++++ /dev/null
+@@ -1,6 +0,0 @@
+-                     model loss
+-
+-loss  10 4
+-
+-            0  1000  2000 epoch 3000  4000  5000
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/checkpoint b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/checkpoint
+deleted file mode 100644
+index efd0621..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/checkpoint
++++ /dev/null
+@@ -1,2 +0,0 @@
+-model_checkpoint_path: "weights"
+-all_model_checkpoint_paths: "weights"
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/model.h5 b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/model.h5
+deleted file mode 100644
+index 42f2d29..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/model.h5 and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/weights.data-00000-of-00001 b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/weights.data-00000-of-00001
+deleted file mode 100644
+index f5412d8..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/weights.data-00000-of-00001 and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/weights.index b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/weights.index
+deleted file mode 100644
+index 98843ba..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/2/weights.index and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Checkpoints/best_weights.data-00000-of-00001 b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Checkpoints/best_weights.data-00000-of-00001
+deleted file mode 100644
+index 256a43c..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Checkpoints/best_weights.data-00000-of-00001 and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Checkpoints/best_weights.index b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Checkpoints/best_weights.index
+deleted file mode 100644
+index 097003b..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Checkpoints/best_weights.index and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Checkpoints/checkpoint b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Checkpoints/checkpoint
+deleted file mode 100644
+index 6f558d3..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Checkpoints/checkpoint
++++ /dev/null
+@@ -1,2 +0,0 @@
+-model_checkpoint_path: "best_weights"
+-all_model_checkpoint_paths: "best_weights"
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Config_file.txt b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Config_file.txt
+deleted file mode 100644
+index e2a5fb6..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Config_file.txt
++++ /dev/null
+@@ -1 +0,0 @@
+-{"3": "3", "R2_x1": 0.4432260835260825, "R2_x2": 0.7824331938959111, "R2_x3": 0.9995600724905176, "R2_x4": 0.9167374206722472, "R2_x5": 0.44124983045241994, "R2_y1": 0.3142267564742206, "R2_y2": 0.9860050019753175, "R2_y3": 0.9963335304889342, "R2_y4": 0.9482372145706357, "R2_y5": 0.9907648439293896, "alpha_ang": 1.5707963705062866, "weigths": [[-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [2.8684210777282715, 0.21047848463058472], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [1.3193318843841553, 0.11092826724052429], [0.07497424632310867, -0.0], [0.5154575109481812, -0.0], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [2.741626024246216, 0.0036545589100569487]]}
+\ No newline at end of file
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_PI-CANN_MAP_3_cy_1.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_PI-CANN_MAP_3_cy_1.pdf
+deleted file mode 100644
+index 57090ef..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_PI-CANN_MAP_3_cy_1.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 1                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 1
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_PI-CANN_MAP_3_cy_2.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_PI-CANN_MAP_3_cy_2.pdf
+deleted file mode 100644
+index 214eb2f..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_PI-CANN_MAP_3_cy_2.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 2                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 2
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_PI-CANN_MAP_3_cy_3.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_PI-CANN_MAP_3_cy_3.pdf
+deleted file mode 100644
+index adef5c4..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_PI-CANN_MAP_3_cy_3.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 3                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 3
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_PI-CANN_MAP_3_cy_4.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_PI-CANN_MAP_3_cy_4.pdf
+deleted file mode 100644
+index d244779..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_PI-CANN_MAP_3_cy_4.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 4                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 4
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_PI-CANN_MAP_3_cy_5.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_PI-CANN_MAP_3_cy_5.pdf
+deleted file mode 100644
+index 2f14ac6..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_PI-CANN_MAP_3_cy_5.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 5                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 5
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_PI-CANN_skin.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_PI-CANN_skin.pdf
+deleted file mode 100644
+index 471f05a..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_PI-CANN_skin.pdf
++++ /dev/null
+@@ -1,26 +0,0 @@
+-                     0.6          model x  data x                                        1.15
+-
+-                          R2: 0.443                                       stretch y [-]  1.10
+-                          R2: 0.782
+-Cauchy stress [MPa]       R2: 1.000                                                      1.05
+-                          R2: 0.917
+-                     0.3 R2: 0.441                                                       1.00  1.00  1.05 stre1t.1c0h x [-]1.15  1.20
+-
+-                          Ra2ll: 0.717
+-
+-                     0.0                           1.1stretch x [-]  1.2
+-                             1.0
+-
+-                     0.6          model y  data z
+-
+-Cauchy stress [MPa]       R2: 0.314
+-                          R2: 0.986
+-                          R2: 0.996
+-                          R2: 0.948
+-                     0.3 R2: 0.991
+-
+-                          Ra2ll: 0.847
+-
+-                     0.0                           1.1stretch y [-]  1.2
+-                             1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_PI-CANN_skin_solo.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_PI-CANN_skin_solo.pdf
+deleted file mode 100644
+index b358486..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_PI-CANN_skin_solo.pdf
++++ /dev/null
+@@ -1,14 +0,0 @@
+-       model x              model y                                                                                  1.12
+-       data x               data y                                                                                   1.10
+-Cauchy stress [kPa]                                                                                                  1.08
+-                                                                                                      stretch y [-]  1.06
+-    R2: 1.000 | Ry2: 0.996                                                                                           1.04
+-                                                                                                                     1.02
+-12                                                                                                                   1.00
+-
+-9                                                                                                                       1.00 1.02 1.04stre1t.c0h6 x 1[.0-]8 1.10 1.12
+-
+-6
+-
+-0 1.0                                1.4 stretch x [-]1.6
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_loss_.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_loss_.pdf
+deleted file mode 100644
+index 87b6b90..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/Plot_loss_.pdf
++++ /dev/null
+@@ -1,7 +0,0 @@
+-loss                           model loss
+-
+-      10 3
+-
+-      10 4
+-              0 1000 2000 3000 e4p0o0c0h 5000 6000 7000 8000
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/checkpoint b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/checkpoint
+deleted file mode 100644
+index efd0621..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/checkpoint
++++ /dev/null
+@@ -1,2 +0,0 @@
+-model_checkpoint_path: "weights"
+-all_model_checkpoint_paths: "weights"
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/model.h5 b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/model.h5
+deleted file mode 100644
+index 74e7bad..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/model.h5 and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/weights.data-00000-of-00001 b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/weights.data-00000-of-00001
+deleted file mode 100644
+index 256a43c..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/weights.data-00000-of-00001 and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/weights.index b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/weights.index
+deleted file mode 100644
+index 097003b..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/3/weights.index and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Checkpoints/best_weights.data-00000-of-00001 b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Checkpoints/best_weights.data-00000-of-00001
+deleted file mode 100644
+index f08e4d5..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Checkpoints/best_weights.data-00000-of-00001 and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Checkpoints/best_weights.index b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Checkpoints/best_weights.index
+deleted file mode 100644
+index 84f86c5..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Checkpoints/best_weights.index and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Checkpoints/checkpoint b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Checkpoints/checkpoint
+deleted file mode 100644
+index 6f558d3..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Checkpoints/checkpoint
++++ /dev/null
+@@ -1,2 +0,0 @@
+-model_checkpoint_path: "best_weights"
+-all_model_checkpoint_paths: "best_weights"
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Config_file.txt b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Config_file.txt
+deleted file mode 100644
+index 51bda1e..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Config_file.txt
++++ /dev/null
+@@ -1 +0,0 @@
+-{"4": "4", "R2_x1": 0.8036906857001559, "R2_x2": 0.9509308822950695, "R2_x3": 0.9637353320225771, "R2_x4": 0.9747959293543412, "R2_x5": 0.2762477378278909, "R2_y1": 0.8633652656526671, "R2_y2": 0.9876432386393071, "R2_y3": 0.9808400223977478, "R2_y4": 0.9981097126935965, "R2_y5": 0.939974731896094, "alpha_ang": 1.5707963705062866, "weigths": [[-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [4.564572811126709, 0.11438304930925369], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [2.0509769916534424, 0.05318605527281761], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [1.0140652656555176, 0.0182357095181942]]}
+\ No newline at end of file
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_PI-CANN_MAP_4_cy_1.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_PI-CANN_MAP_4_cy_1.pdf
+deleted file mode 100644
+index df4147b..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_PI-CANN_MAP_4_cy_1.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 1                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 1
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_PI-CANN_MAP_4_cy_2.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_PI-CANN_MAP_4_cy_2.pdf
+deleted file mode 100644
+index 39ab9b8..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_PI-CANN_MAP_4_cy_2.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 2                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 2
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_PI-CANN_MAP_4_cy_3.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_PI-CANN_MAP_4_cy_3.pdf
+deleted file mode 100644
+index 5409601..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_PI-CANN_MAP_4_cy_3.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 3                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 3
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_PI-CANN_MAP_4_cy_4.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_PI-CANN_MAP_4_cy_4.pdf
+deleted file mode 100644
+index d411edf..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_PI-CANN_MAP_4_cy_4.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 4                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 4
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_PI-CANN_MAP_4_cy_5.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_PI-CANN_MAP_4_cy_5.pdf
+deleted file mode 100644
+index 05cc645..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_PI-CANN_MAP_4_cy_5.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 5                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 5
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_PI-CANN_skin.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_PI-CANN_skin.pdf
+deleted file mode 100644
+index a7fadce..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_PI-CANN_skin.pdf
++++ /dev/null
+@@ -1,26 +0,0 @@
+-                     0.6          model x  data x                                        1.15
+-
+-                          R2: 0.804                                       stretch y [-]  1.10
+-                          R2: 0.951
+-Cauchy stress [MPa]       R2: 0.964                                                      1.05
+-                          R2: 0.975
+-                     0.3 R2: 0.276                                                       1.00  1.00  1.05 stre1t.1c0h x [-]1.15  1.20
+-
+-                          Ra2ll: 0.794
+-
+-                     0.0                           1.1stretch x [-]  1.2
+-                             1.0
+-
+-                     0.6          model y  data z
+-
+-Cauchy stress [MPa]       R2: 0.863
+-                          R2: 0.988
+-                          R2: 0.981
+-                          R2: 0.998
+-                     0.3 R2: 0.940
+-
+-                          Ra2ll: 0.954
+-
+-                     0.0                           1.1stretch y [-]  1.2
+-                             1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_PI-CANN_skin_solo.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_PI-CANN_skin_solo.pdf
+deleted file mode 100644
+index 18c18ae..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_PI-CANN_skin_solo.pdf
++++ /dev/null
+@@ -1,14 +0,0 @@
+-       model x              model y                                                                                  1.04
+-       data x               data y                                                                                   1.02
+-Cauchy stress [kPa]                                                                                                  1.00
+-                                                                                                      stretch y [-]  0.98
+-    R2: 0.975 | Ry2: 0.998                                                                                           0.96
+-
+-12
+-
+-9                                                                                                                          1.00  1.05 stre1.t1c0h x [-]1.15  1.20
+-
+-6
+-
+-0 1.0                                1.4 stretch x [-]1.6
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_loss_.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_loss_.pdf
+deleted file mode 100644
+index 618dbcc..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/Plot_loss_.pdf
++++ /dev/null
+@@ -1,5 +0,0 @@
+-4 × 10 4  model loss
+-
+-3 × 10 4
+-           0 1000 2000 3000 e4p0o0c0h 5000 6000 7000 8000
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/checkpoint b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/checkpoint
+deleted file mode 100644
+index efd0621..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/checkpoint
++++ /dev/null
+@@ -1,2 +0,0 @@
+-model_checkpoint_path: "weights"
+-all_model_checkpoint_paths: "weights"
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/model.h5 b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/model.h5
+deleted file mode 100644
+index f15eb87..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/model.h5 and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/weights.data-00000-of-00001 b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/weights.data-00000-of-00001
+deleted file mode 100644
+index f08e4d5..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/weights.data-00000-of-00001 and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/weights.index b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/weights.index
+deleted file mode 100644
+index 84f86c5..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/4/weights.index and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Checkpoints/best_weights.data-00000-of-00001 b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Checkpoints/best_weights.data-00000-of-00001
+deleted file mode 100644
+index 33f28bc..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Checkpoints/best_weights.data-00000-of-00001 and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Checkpoints/best_weights.index b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Checkpoints/best_weights.index
+deleted file mode 100644
+index 5aeeb3c..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Checkpoints/best_weights.index and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Checkpoints/checkpoint b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Checkpoints/checkpoint
+deleted file mode 100644
+index 6f558d3..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Checkpoints/checkpoint
++++ /dev/null
+@@ -1,2 +0,0 @@
+-model_checkpoint_path: "best_weights"
+-all_model_checkpoint_paths: "best_weights"
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Config_file.txt b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Config_file.txt
+deleted file mode 100644
+index c02eb67..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Config_file.txt
++++ /dev/null
+@@ -1 +0,0 @@
+-{"5": "5", "R2_x1": 0.0, "R2_x2": 0.0, "R2_x3": 0.0, "R2_x4": 0.0, "R2_x5": 0.9937981371029774, "R2_y1": 0.0, "R2_y2": 0.0, "R2_y3": 0.5311593406615103, "R2_y4": 0.0, "R2_y5": 0.9979014368440104, "alpha_ang": 1.5707963705062866, "weigths": [[-0.0, -0.0], [-0.0, -0.0], [0.312656044960022, 0.31982332468032837], [3.46783447265625, 0.46241647005081177], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [1.391516089439392, -0.0], [0.01725621148943901, -0.0], [0.368378609418869, -0.0], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [2.3707516193389893, 0.0028027063235640526]]}
+\ No newline at end of file
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_PI-CANN_MAP_5_cy_1.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_PI-CANN_MAP_5_cy_1.pdf
+deleted file mode 100644
+index 9a3d19d..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_PI-CANN_MAP_5_cy_1.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 1                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 1
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_PI-CANN_MAP_5_cy_2.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_PI-CANN_MAP_5_cy_2.pdf
+deleted file mode 100644
+index 67b3747..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_PI-CANN_MAP_5_cy_2.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 2                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 2
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_PI-CANN_MAP_5_cy_3.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_PI-CANN_MAP_5_cy_3.pdf
+deleted file mode 100644
+index 82149bc..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_PI-CANN_MAP_5_cy_3.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 3                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 3
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_PI-CANN_MAP_5_cy_4.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_PI-CANN_MAP_5_cy_4.pdf
+deleted file mode 100644
+index ab01c10..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_PI-CANN_MAP_5_cy_4.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 4                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 4
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_PI-CANN_MAP_5_cy_5.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_PI-CANN_MAP_5_cy_5.pdf
+deleted file mode 100644
+index a6764f0..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_PI-CANN_MAP_5_cy_5.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 5                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 5
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_PI-CANN_skin.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_PI-CANN_skin.pdf
+deleted file mode 100644
+index 5216b89..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_PI-CANN_skin.pdf
++++ /dev/null
+@@ -1,26 +0,0 @@
+-                     0.6          model x  data x                                        1.15
+-
+-                          R2: 0.000                                       stretch y [-]  1.10
+-                          R2: 0.000
+-Cauchy stress [MPa]       R2: 0.000                                                      1.05
+-                          R2: 0.000
+-                     0.3 R2: 0.994                                                       1.00  1.00  1.05 stre1t.1c0h x [-]1.15  1.20
+-
+-                          Ra2ll: 0.199
+-
+-                     0.0                           1.1stretch x [-]  1.2
+-                             1.0
+-
+-                     0.6          model y  data z
+-
+-Cauchy stress [MPa]       R2: 0.000
+-                          R2: 0.000
+-                          R2: 0.531
+-                          R2: 0.000
+-                     0.3 R2: 0.998
+-
+-                          Ra2ll: 0.306
+-
+-                     0.0                           1.1stretch y [-]  1.2
+-                             1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_PI-CANN_skin_solo.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_PI-CANN_skin_solo.pdf
+deleted file mode 100644
+index da2b75c..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_PI-CANN_skin_solo.pdf
++++ /dev/null
+@@ -1,20 +0,0 @@
+-       model x              model y                                                                                 1.150
+-       data x               data y
+-Cauchy stress [kPa]                                                                                                 1.125
+-                                                                                                     stretch y [-]
+-                                                                                                                    1.100
+-
+-    R2: 0.994 | Ry2: 0.998                                                                                          1.075
+-
+-12                                                                                                                  1.050
+-
+-                                                                                                                    1.025
+-
+-                                                                                                                    1.000  0.96  0.98 stretc1h.00 x [-] 1.02  1.04
+-
+-9
+-
+-6
+-
+-0 1.0                                1.4 stretch x [-]1.6
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_loss_.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_loss_.pdf
+deleted file mode 100644
+index 79b63ed..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/Plot_loss_.pdf
++++ /dev/null
+@@ -1,7 +0,0 @@
+-loss                           model loss
+-
+-      10 3
+-
+-      10 4
+-              0 1000 2000 3000 e4p0o0c0h 5000 6000 7000 8000
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/checkpoint b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/checkpoint
+deleted file mode 100644
+index efd0621..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/checkpoint
++++ /dev/null
+@@ -1,2 +0,0 @@
+-model_checkpoint_path: "weights"
+-all_model_checkpoint_paths: "weights"
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/model.h5 b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/model.h5
+deleted file mode 100644
+index dcbc89e..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/model.h5 and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/weights.data-00000-of-00001 b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/weights.data-00000-of-00001
+deleted file mode 100644
+index 33f28bc..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/weights.data-00000-of-00001 and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/weights.index b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/weights.index
+deleted file mode 100644
+index 5aeeb3c..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/5/weights.index and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/All_plots_combined.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/All_plots_combined.pdf
+deleted file mode 100644
+index 8e76815..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/All_plots_combined.pdf
++++ /dev/null
+@@ -1,75 +0,0 @@
+-                        0.6       model x             model y                                              0.6       model x             model y                                              0.6       model x             model y                                              0.6       model x             model y                                              0.6       model x             model y
+-                                  data x              data y                                                         data x              data y                                                         data x              data y                                                         data x              data y                                                         data x              data y
+-
+-nominal stress P [MPa]       Rx2: 0.824 | Ry2: 0.871                               nominal stress P [MPa]       Rx2: 0.965 | Ry2: 0.990                               nominal stress P [MPa]       Rx2: 0.956 | Ry2: 0.978                               nominal stress P [MPa]       Rx2: 0.973 | Ry2: 0.997                               nominal stress P [MPa]       Rx2: 0.273 | Ry2: 0.938
+-
+-                        0.3                                                                                0.3                                                                                0.3                                                                                0.3                                                                                0.3
+-
+-                        0.0                                                                                0.0                                                                                0.0                                                                                0.0                                                                                0.0
+-
+-                             1.0           st1r.e1tch x [-]         1.2                                         1.0           st1r.e1tch x [-]         1.2                                         1.0           st1r.e1tch x [-]         1.2                                         1.0           st1r.e1tch x [-]         1.2                                         1.0           st1r.e1tch x [-]         1.2
+-
+-                        0.6       data x                                 I1                                0.6       data x                                 I1                                0.6       data x                                 I1                                0.6       data x                                 I1                                0.6       data x                                 I1
+-                                  model x                                exp(I1)                                     model x                                exp(I1)                                     model x                                exp(I1)                                     model x                                exp(I1)                                     model x                                exp(I1)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I12
+-                                                                         I12                                                                                I12                                                                                I12                                                                                I12                                                                                exp(I12)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I2
+-                                                                         exp(I12)                                                                           exp(I12)                                                                           exp(I12)                                                                           exp(I12)                                                                           exp(I2)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I22
+-Cauchy stress [MPa]          load path: 1                                I2        Cauchy stress [MPa]          load path: 2                                I2        Cauchy stress [MPa]          load path: 3                                I2        Cauchy stress [MPa]          load path: 4                                I2        Cauchy stress [MPa]          load path: 5                                exp(I22)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I4
+-                                                                         exp(I2)                                                                            exp(I2)                                                                            exp(I2)                                                                            exp(I2)                                                                            exp(I4)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I42
+-                                                                         I22                                                                                I22                                                                                I22                                                                                I22                                                                                exp(I42)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I5
+-                        0.3                                              exp(I22)                          0.3                                              exp(I22)                          0.3                                              exp(I22)                          0.3                                              exp(I22)                          0.3                                              exp(I5)
+-                                                                         I4                                                                                 I4                                                                                 I4                                                                                 I4                                                                                 I52
+-                                                                                                                                                                                                                                                                                                                                                                                                                     exp(I52)
+-                                                                         exp(I4)                                                                            exp(I4)                                                                            exp(I4)                                                                            exp(I4)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I1
+-                                                                         I42                                                                                I42                                                                                I42                                                                                I42                                                                                exp(I1)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I12
+-                                                                         exp(I42)                                                                           exp(I42)                                                                           exp(I42)                                                                           exp(I42)                                                                           exp(I12)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I2
+-                                                                         I5                                                                                 I5                                                                                 I5                                                                                 I5                                                                                 exp(I2)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I22
+-                                                                         exp(I5)                                                                            exp(I5)                                                                            exp(I5)                                                                            exp(I5)                                                                            exp(I22)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I4
+-                        0.0                                              I52                               0.0                                              I52                               0.0                                              I52                               0.0                                              I52                               0.0                                              exp(I4)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I42
+-                                                                         exp(I52)                                                                           exp(I52)                                                                           exp(I52)                                                                           exp(I52)                                                                           exp(I42)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I5
+-                             1.0           st1r.e1tch x [-]    1.2                                              1.0           st1r.e1tch x [-]    1.2                                              1.0           st1r.e1tch x [-]    1.2                                              1.0           st1r.e1tch x [-]    1.2                                              1.0           st1r.e1tch x [-]    1.2       exp(I5)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I52
+-                        0.6       data y                                 I1                                0.6       data y                                 I1                                0.6       data y                                 I1                                0.6       data y                                 I1                                0.6       data y                                 exp(I52)
+-                                  model y                                exp(I1)                                     model y                                exp(I1)                                     model y                                exp(I1)                                     model y                                exp(I1)                                     model y
+-
+-                                                                         I12                                                                                I12                                                                                I12                                                                                I12
+-
+-                                                                         exp(I12)                                                                           exp(I12)                                                                           exp(I12)                                                                           exp(I12)
+-
+-Cauchy stress [MPa]          load path: 1                                I2        Cauchy stress [MPa]          load path: 2                                I2        Cauchy stress [MPa]          load path: 3                                I2        Cauchy stress [MPa]          load path: 4                                I2        Cauchy stress [MPa]          load path: 5
+-
+-                                                                         exp(I2)                                                                            exp(I2)                                                                            exp(I2)                                                                            exp(I2)
+-
+-                                                                         I22                                                                                I22                                                                                I22                                                                                I22
+-
+-                        0.3                                              exp(I22)                          0.3                                              exp(I22)                          0.3                                              exp(I22)                          0.3                                              exp(I22)                          0.3
+-                                                                         I4                                                                                 I4                                                                                 I4                                                                                 I4
+-
+-                                                                         exp(I4)                                                                            exp(I4)                                                                            exp(I4)                                                                            exp(I4)
+-
+-                                                                         I42                                                                                I42                                                                                I42                                                                                I42
+-
+-                                                                         exp(I42)                                                                           exp(I42)                                                                           exp(I42)                                                                           exp(I42)
+-
+-                                                                         I5                                                                                 I5                                                                                 I5                                                                                 I5
+-
+-                                                                         exp(I5)                                                                            exp(I5)                                                                            exp(I5)                                                                            exp(I5)
+-
+-                        0.0                                              I52                               0.0                                              I52                               0.0                                              I52                               0.0                                              I52                               0.0
+-                             1.0
+-                                                                         exp(I52)                                                                           exp(I52)                                                                           exp(I52)                                                                           exp(I52)
+-
+-                                           st1r.e1tch y [-]    1.2                                              1.0           st1r.e1tch y [-]    1.2                                              1.0           st1r.e1tch y [-]    1.2                                              1.0           st1r.e1tch y [-]    1.2                                              1.0           st1r.e1tch y [-]    1.2
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/All_plots_solo.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/All_plots_solo.pdf
+deleted file mode 100644
+index 316af5b..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/All_plots_solo.pdf
++++ /dev/null
+@@ -1,75 +0,0 @@
+-                        0.6       model x             model y                                              0.6       model x             model y                                              0.6       model x             model y                                              0.6       model x             model y                                              0.6       model x             model y
+-                                  data x              data y                                                         data x              data y                                                         data x              data y                                                         data x              data y                                                         data x              data y
+-
+-nominal stress P [MPa]       Rx2: 0.999 | Ry2: 0.993                               nominal stress P [MPa]       Rx2: 0.999 | Ry2: 0.997                               nominal stress P [MPa]       Rx2: 1.000 | Ry2: 0.996                               nominal stress P [MPa]       Rx2: 0.975 | Ry2: 0.998                               nominal stress P [MPa]       Rx2: 0.994 | Ry2: 0.998
+-
+-                        0.3                                                                                0.3                                                                                0.3                                                                                0.3                                                                                0.3
+-
+-                        0.0                                                                                0.0                                                                                0.0                                                                                0.0                                                                                0.0
+-
+-                             1.0           st1r.e1tch x [-]         1.2                                         1.0           st1r.e1tch x [-]         1.2                                         1.0           st1r.e1tch x [-]         1.2                                         1.0           st1r.e1tch x [-]         1.2                                         1.0           st1r.e1tch x [-]         1.2
+-
+-                        0.6       data x                                 I1                                0.6       data x                                 I1                                0.6       data x                                 I1                                0.6       data x                                 I1                                0.6       data x                                 I1
+-                                  model x                                exp(I1)                                     model x                                exp(I1)                                     model x                                exp(I1)                                     model x                                exp(I1)                                     model x                                exp(I1)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I12
+-                                                                         I12                                                                                I12                                                                                I12                                                                                I12                                                                                exp(I12)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I2
+-                                                                         exp(I12)                                                                           exp(I12)                                                                           exp(I12)                                                                           exp(I12)                                                                           exp(I2)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I22
+-Cauchy stress [MPa]          load path: 1                                I2        Cauchy stress [MPa]          load path: 2                                I2        Cauchy stress [MPa]          load path: 3                                I2        Cauchy stress [MPa]          load path: 4                                I2        Cauchy stress [MPa]          load path: 5                                exp(I22)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I4
+-                                                                         exp(I2)                                                                            exp(I2)                                                                            exp(I2)                                                                            exp(I2)                                                                            exp(I4)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I42
+-                                                                         I22                                                                                I22                                                                                I22                                                                                I22                                                                                exp(I42)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I5
+-                        0.3                                              exp(I22)                          0.3                                              exp(I22)                          0.3                                              exp(I22)                          0.3                                              exp(I22)                          0.3                                              exp(I5)
+-                                                                         I4                                                                                 I4                                                                                 I4                                                                                 I4                                                                                 I52
+-                                                                                                                                                                                                                                                                                                                                                                                                                     exp(I52)
+-                                                                         exp(I4)                                                                            exp(I4)                                                                            exp(I4)                                                                            exp(I4)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I1
+-                                                                         I42                                                                                I42                                                                                I42                                                                                I42                                                                                exp(I1)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I12
+-                                                                         exp(I42)                                                                           exp(I42)                                                                           exp(I42)                                                                           exp(I42)                                                                           exp(I12)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I2
+-                                                                         I5                                                                                 I5                                                                                 I5                                                                                 I5                                                                                 exp(I2)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I22
+-                                                                         exp(I5)                                                                            exp(I5)                                                                            exp(I5)                                                                            exp(I5)                                                                            exp(I22)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I4
+-                        0.0                                              I52                               0.0                                              I52                               0.0                                              I52                               0.0                                              I52                               0.0                                              exp(I4)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I42
+-                                                                         exp(I52)                                                                           exp(I52)                                                                           exp(I52)                                                                           exp(I52)                                                                           exp(I42)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I5
+-                             1.0           st1r.e1tch x [-]    1.2                                              1.0           st1r.e1tch x [-]    1.2                                              1.0           st1r.e1tch x [-]    1.2                                              1.0           st1r.e1tch x [-]    1.2                                              1.0           st1r.e1tch x [-]    1.2       exp(I5)
+-                                                                                                                                                                                                                                                                                                                                                                                                                     I52
+-                        0.6       data y                                 I1                                0.6       data y                                 I1                                0.6       data y                                 I1                                0.6       data y                                 I1                                0.6       data y                                 exp(I52)
+-                                  model y                                exp(I1)                                     model y                                exp(I1)                                     model y                                exp(I1)                                     model y                                exp(I1)                                     model y
+-
+-                                                                         I12                                                                                I12                                                                                I12                                                                                I12
+-
+-                                                                         exp(I12)                                                                           exp(I12)                                                                           exp(I12)                                                                           exp(I12)
+-
+-Cauchy stress [MPa]          load path: 1                                I2        Cauchy stress [MPa]          load path: 2                                I2        Cauchy stress [MPa]          load path: 3                                I2        Cauchy stress [MPa]          load path: 4                                I2        Cauchy stress [MPa]          load path: 5
+-
+-                                                                         exp(I2)                                                                            exp(I2)                                                                            exp(I2)                                                                            exp(I2)
+-
+-                                                                         I22                                                                                I22                                                                                I22                                                                                I22
+-
+-                        0.3                                              exp(I22)                          0.3                                              exp(I22)                          0.3                                              exp(I22)                          0.3                                              exp(I22)                          0.3
+-                                                                         I4                                                                                 I4                                                                                 I4                                                                                 I4
+-
+-                                                                         exp(I4)                                                                            exp(I4)                                                                            exp(I4)                                                                            exp(I4)
+-
+-                                                                         I42                                                                                I42                                                                                I42                                                                                I42
+-
+-                                                                         exp(I42)                                                                           exp(I42)                                                                           exp(I42)                                                                           exp(I42)
+-
+-                                                                         I5                                                                                 I5                                                                                 I5                                                                                 I5
+-
+-                                                                         exp(I5)                                                                            exp(I5)                                                                            exp(I5)                                                                            exp(I5)
+-
+-                        0.0                                              I52                               0.0                                              I52                               0.0                                              I52                               0.0                                              I52                               0.0
+-                             1.0
+-                                                                         exp(I52)                                                                           exp(I52)                                                                           exp(I52)                                                                           exp(I52)
+-
+-                                           st1r.e1tch y [-]    1.2                                              1.0           st1r.e1tch y [-]    1.2                                              1.0           st1r.e1tch y [-]    1.2                                              1.0           st1r.e1tch y [-]    1.2                                              1.0           st1r.e1tch y [-]    1.2
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/Model_summary.txt b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/Model_summary.txt
+index 13c9bc3..2c7e55f 100644
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/Model_summary.txt
++++ b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/Model_summary.txt
+@@ -11,104 +11,103 @@ ________________________________________________________________________________
+                                                                                 
+  I5 (InputLayer)        [(None, 1)]             0       []                      
+                                                                                 
+- lambda_40 (Lambda)     (None, 1)               0       ['I1[0][0]']            
++ lambda (Lambda)        (None, 1)               0       ['I1[0][0]']            
+                                                                                 
+- lambda_41 (Lambda)     (None, 1)               0       ['I2[0][0]']            
++ lambda_1 (Lambda)      (None, 1)               0       ['I2[0][0]']            
+                                                                                 
+- lambda_42 (Lambda)     (None, 1)               0       ['I4[0][0]']            
++ lambda_2 (Lambda)      (None, 1)               0       ['I4[0][0]']            
+                                                                                 
+- lambda_43 (Lambda)     (None, 1)               0       ['I5[0][0]']            
++ lambda_3 (Lambda)      (None, 1)               0       ['I5[0][0]']            
+                                                                                 
+- tf.math.square_40 (TF  (None, 1)               0       ['lambda_40[0][0]']     
+- OpLambda)                                                                      
++ tf.math.square (TFOpL  (None, 1)               0       ['lambda[0][0]']        
++ ambda)                                                                         
+                                                                                 
+- tf.math.square_41 (TF  (None, 1)               0       ['lambda_40[0][0]']     
+- OpLambda)                                                                      
++ tf.math.square_1 (TFO  (None, 1)               0       ['lambda[0][0]']        
++ pLambda)                                                                       
+                                                                                 
+- tf.math.square_42 (TF  (None, 1)               0       ['lambda_41[0][0]']     
+- OpLambda)                                                                      
++ tf.math.square_2 (TFO  (None, 1)               0       ['lambda_1[0][0]']      
++ pLambda)                                                                       
+                                                                                 
+- tf.math.square_43 (TF  (None, 1)               0       ['lambda_41[0][0]']     
+- OpLambda)                                                                      
++ tf.math.square_3 (TFO  (None, 1)               0       ['lambda_1[0][0]']      
++ pLambda)                                                                       
+                                                                                 
+- tf.math.square_44 (TF  (None, 1)               0       ['lambda_42[0][0]']     
+- OpLambda)                                                                      
++ tf.math.square_4 (TFO  (None, 1)               0       ['lambda_2[0][0]']      
++ pLambda)                                                                       
+                                                                                 
+- tf.math.square_45 (TF  (None, 1)               0       ['lambda_42[0][0]']     
+- OpLambda)                                                                      
++ tf.math.square_5 (TFO  (None, 1)               0       ['lambda_2[0][0]']      
++ pLambda)                                                                       
+                                                                                 
+- tf.math.square_46 (TF  (None, 1)               0       ['lambda_43[0][0]']     
+- OpLambda)                                                                      
++ tf.math.square_6 (TFO  (None, 1)               0       ['lambda_3[0][0]']      
++ pLambda)                                                                       
+                                                                                 
+- tf.math.square_47 (TF  (None, 1)               0       ['lambda_43[0][0]']     
+- OpLambda)                                                                      
++ tf.math.square_7 (TFO  (None, 1)               0       ['lambda_3[0][0]']      
++ pLambda)                                                                       
+                                                                                 
+- w11 (Dense)            (None, 1)               1       ['lambda_40[0][0]']     
++ w11 (Dense)            (None, 1)               1       ['lambda[0][0]']        
+                                                                                 
+- w21 (Dense)            (None, 1)               1       ['lambda_40[0][0]']     
++ w21 (Dense)            (None, 1)               1       ['lambda[0][0]']        
+                                                                                 
+- w31 (Dense)            (None, 1)               1       ['tf.math.square_40[0][0
+-                                                        ]']                     
++ w31 (Dense)            (None, 1)               1       ['tf.math.square[0][0]']
+                                                                                 
+- w41 (Dense)            (None, 1)               1       ['tf.math.square_41[0][0
+-                                                        ]']                     
++ w41 (Dense)            (None, 1)               1       ['tf.math.square_1[0][0]
++                                                        ']                      
+                                                                                 
+- w51 (Dense)            (None, 1)               1       ['lambda_41[0][0]']     
++ w51 (Dense)            (None, 1)               1       ['lambda_1[0][0]']      
+                                                                                 
+- w61 (Dense)            (None, 1)               1       ['lambda_41[0][0]']     
++ w61 (Dense)            (None, 1)               1       ['lambda_1[0][0]']      
+                                                                                 
+- w71 (Dense)            (None, 1)               1       ['tf.math.square_42[0][0
+-                                                        ]']                     
++ w71 (Dense)            (None, 1)               1       ['tf.math.square_2[0][0]
++                                                        ']                      
+                                                                                 
+- w81 (Dense)            (None, 1)               1       ['tf.math.square_43[0][0
+-                                                        ]']                     
++ w81 (Dense)            (None, 1)               1       ['tf.math.square_3[0][0]
++                                                        ']                      
+                                                                                 
+- w91 (Dense)            (None, 1)               1       ['lambda_42[0][0]']     
++ w91 (Dense)            (None, 1)               1       ['lambda_2[0][0]']      
+                                                                                 
+- w101 (Dense)           (None, 1)               1       ['lambda_42[0][0]']     
++ w101 (Dense)           (None, 1)               1       ['lambda_2[0][0]']      
+                                                                                 
+- w111 (Dense)           (None, 1)               1       ['tf.math.square_44[0][0
+-                                                        ]']                     
++ w111 (Dense)           (None, 1)               1       ['tf.math.square_4[0][0]
++                                                        ']                      
+                                                                                 
+- w121 (Dense)           (None, 1)               1       ['tf.math.square_45[0][0
+-                                                        ]']                     
++ w121 (Dense)           (None, 1)               1       ['tf.math.square_5[0][0]
++                                                        ']                      
+                                                                                 
+- w131 (Dense)           (None, 1)               1       ['lambda_43[0][0]']     
++ w131 (Dense)           (None, 1)               1       ['lambda_3[0][0]']      
+                                                                                 
+- w141 (Dense)           (None, 1)               1       ['lambda_43[0][0]']     
++ w141 (Dense)           (None, 1)               1       ['lambda_3[0][0]']      
+                                                                                 
+- w151 (Dense)           (None, 1)               1       ['tf.math.square_46[0][0
+-                                                        ]']                     
++ w151 (Dense)           (None, 1)               1       ['tf.math.square_6[0][0]
++                                                        ']                      
+                                                                                 
+- w161 (Dense)           (None, 1)               1       ['tf.math.square_47[0][0
+-                                                        ]']                     
++ w161 (Dense)           (None, 1)               1       ['tf.math.square_7[0][0]
++                                                        ']                      
+                                                                                 
+- concatenate_30 (Conca  (None, 4)               0       ['w11[0][0]',           
+- tenate)                                                 'w21[0][0]',           
++ concatenate (Concaten  (None, 4)               0       ['w11[0][0]',           
++ ate)                                                    'w21[0][0]',           
+                                                          'w31[0][0]',           
+                                                          'w41[0][0]']           
+                                                                                 
+- concatenate_31 (Conca  (None, 4)               0       ['w51[0][0]',           
+- tenate)                                                 'w61[0][0]',           
++ concatenate_1 (Concat  (None, 4)               0       ['w51[0][0]',           
++ enate)                                                  'w61[0][0]',           
+                                                          'w71[0][0]',           
+                                                          'w81[0][0]']           
+                                                                                 
+- concatenate_32 (Conca  (None, 4)               0       ['w91[0][0]',           
+- tenate)                                                 'w101[0][0]',          
++ concatenate_2 (Concat  (None, 4)               0       ['w91[0][0]',           
++ enate)                                                  'w101[0][0]',          
+                                                          'w111[0][0]',          
+                                                          'w121[0][0]']          
+                                                                                 
+- concatenate_33 (Conca  (None, 4)               0       ['w131[0][0]',          
+- tenate)                                                 'w141[0][0]',          
++ concatenate_3 (Concat  (None, 4)               0       ['w131[0][0]',          
++ enate)                                                  'w141[0][0]',          
+                                                          'w151[0][0]',          
+                                                          'w161[0][0]']          
+                                                                                 
+- concatenate_34 (Conca  (None, 16)              0       ['concatenate_30[0][0]',
+- tenate)                                                 'concatenate_31[0][0]',
+-                                                         'concatenate_32[0][0]',
+-                                                         'concatenate_33[0][0]']
++ concatenate_4 (Concat  (None, 16)              0       ['concatenate[0][0]',   
++ enate)                                                  'concatenate_1[0][0]', 
++                                                         'concatenate_2[0][0]', 
++                                                         'concatenate_3[0][0]'] 
+                                                                                 
+- wx2 (Dense)            (None, 1)               16      ['concatenate_34[0][0]']
++ wx2 (Dense)            (None, 1)               16      ['concatenate_4[0][0]'] 
+                                                                                 
+ ================================================================================
+ Total params: 32 (128.00 Byte)
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/R2_results.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/R2_results.pdf
+deleted file mode 100644
+index b6bebab..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/R2_results.pdf
++++ /dev/null
+@@ -1,10 +0,0 @@
+-                         0RGHOBS
+-
+-                                        [     \
+-
+-         
+-
+-R2>@  
+-
+-           DOO                      
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/R2_table.csv b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/R2_table.csv
+deleted file mode 100644
+index 942312f..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/R2_table.csv
++++ /dev/null
+@@ -1,13 +0,0 @@
+-,all,1,2,3,4,5
+-x1,0.8237465394291605,0.9985830377469816,0.8727770482974001,0.4432260835260825,0.8036906857001559,0.0
+-x2,0.9649101165800468,0.9694823287096035,0.9994364121068404,0.7824331938959111,0.9509308822950695,0.0
+-x3,0.9561667812761205,0.7816889344618314,0.9234249921401986,0.9995600724905176,0.9637353320225771,0.0
+-x4,0.9725050332654736,0.86990224166205,0.8451167976736461,0.9167374206722472,0.9747959293543412,0.0
+-x5,0.2727570067976315,0.03408874008538487,0.15259378663473167,0.44124983045241994,0.2762477378278909,0.9937981371029774
+-y1,0.8713072549910736,0.9929274487372899,0.9228037955335788,0.3142267564742206,0.8633652656526671,0.0
+-y2,0.9897218722274588,0.9032892019490951,0.9967020114792472,0.9860050019753175,0.9876432386393071,0.0
+-y3,0.9777481073305365,0.8314196862385623,0.957809294562895,0.9963335304889342,0.9808400223977478,0.5311593406615103
+-y4,0.9970127226706913,0.8969197978332242,0.9881233086211598,0.9482372145706357,0.9981097126935965,0.0
+-y5,0.9384209509276568,0.819597609917529,0.9060139525121272,0.9907648439293896,0.939974731896094,0.9979014368440104
+-mean,0.876429638549585,0.8097899027341551,0.8564801399561824,0.7818773948475677,0.8739333538479446,0.2522858914608498
+-SD,0.20787579170731724,0.26789869487739687,0.23976674971751386,0.25960572443389657,0.20750428711548738,0.40361993878334385
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/R2_table.tex b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/R2_table.tex
+deleted file mode 100644
+index 74b82ef..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/R2_table.tex
++++ /dev/null
+@@ -1,18 +0,0 @@
+-\begin{tabular}{lrrrrrr}
+-\toprule
+-{} &       all &         1 &         2 &         3 &         4 &         5 \\
+-\midrule
+-x1   &  0.823747 &  0.998583 &  0.872777 &  0.443226 &  0.803691 &  0.000000 \\
+-x2   &  0.964910 &  0.969482 &  0.999436 &  0.782433 &  0.950931 &  0.000000 \\
+-x3   &  0.956167 &  0.781689 &  0.923425 &  0.999560 &  0.963735 &  0.000000 \\
+-x4   &  0.972505 &  0.869902 &  0.845117 &  0.916737 &  0.974796 &  0.000000 \\
+-x5   &  0.272757 &  0.034089 &  0.152594 &  0.441250 &  0.276248 &  0.993798 \\
+-y1   &  0.871307 &  0.992927 &  0.922804 &  0.314227 &  0.863365 &  0.000000 \\
+-y2   &  0.989722 &  0.903289 &  0.996702 &  0.986005 &  0.987643 &  0.000000 \\
+-y3   &  0.977748 &  0.831420 &  0.957809 &  0.996334 &  0.980840 &  0.531159 \\
+-y4   &  0.997013 &  0.896920 &  0.988123 &  0.948237 &  0.998110 &  0.000000 \\
+-y5   &  0.938421 &  0.819598 &  0.906014 &  0.990765 &  0.939975 &  0.997901 \\
+-mean &  0.876430 &  0.809790 &  0.856480 &  0.781877 &  0.873933 &  0.252286 \\
+-SD   &  0.207876 &  0.267899 &  0.239767 &  0.259606 &  0.207504 &  0.403620 \\
+-\bottomrule
+-\end{tabular}
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/R2p_table.csv b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/R2p_table.csv
+deleted file mode 100644
+index b9d3443..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/R2p_table.csv
++++ /dev/null
+@@ -1,3 +0,0 @@
+-,all,1,2,3,4,5
+-x,0.7980170954696866,0.9985830377469816,0.9994364121068404,0.9995600724905176,0.9747959293543412,0.9937981371029774
+-y,0.9548421816294834,0.9929274487372899,0.9967020114792472,0.9963335304889342,0.9981097126935965,0.9979014368440104
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/R2p_table.tex b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/R2p_table.tex
+deleted file mode 100644
+index 9841add..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/R2p_table.tex
++++ /dev/null
+@@ -1,8 +0,0 @@
+-\begin{tabular}{lrrrrrr}
+-\toprule
+-{} &       all &         1 &         2 &         3 &         4 &         5 \\
+-\midrule
+-x &  0.798017 &  0.998583 &  0.999436 &  0.999560 &  0.974796 &  0.993798 \\
+-y &  0.954842 &  0.992927 &  0.996702 &  0.996334 &  0.998110 &  0.997901 \\
+-\bottomrule
+-\end{tabular}
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Checkpoints/best_weights.data-00000-of-00001 b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Checkpoints/best_weights.data-00000-of-00001
+index ab4d65e..7d6e442 100644
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Checkpoints/best_weights.data-00000-of-00001 and b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Checkpoints/best_weights.data-00000-of-00001 differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Checkpoints/best_weights.index b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Checkpoints/best_weights.index
+index ca319dd..7a76417 100644
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Checkpoints/best_weights.index and b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Checkpoints/best_weights.index differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Config_file.txt b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Config_file.txt
+deleted file mode 100644
+index a81cfe0..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Config_file.txt
++++ /dev/null
+@@ -1 +0,0 @@
+-{"all": "all", "R2_x1": 0.8237465394291605, "R2_x2": 0.9649101165800468, "R2_x3": 0.9561667812761205, "R2_x4": 0.9725050332654736, "R2_x5": 0.2727570067976315, "R2_y1": 0.8713072549910736, "R2_y2": 0.9897218722274588, "R2_y3": 0.9777481073305365, "R2_y4": 0.9970127226706913, "R2_y5": 0.9384209509276568, "alpha_ang": 1.5707963705062866, "weigths": [[-0.0, -0.0], [-0.0, -0.0], [0.004317006561905146, 7.93324361438863e-05], [3.074113130569458, 0.16156870126724243], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [1.476806879043579, 0.08799361437559128], [0.07623637467622757, -0.0], [0.555343747138977, -0.0], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [-0.0, -0.0], [1.0140652656555176, 0.0182357095181942]]}
+\ No newline at end of file
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Plot_PI-CANN_MAP_all_cy_1.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Plot_PI-CANN_MAP_all_cy_1.pdf
+deleted file mode 100644
+index 4e122e7..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Plot_PI-CANN_MAP_all_cy_1.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 1                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 1
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Plot_PI-CANN_MAP_all_cy_2.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Plot_PI-CANN_MAP_all_cy_2.pdf
+deleted file mode 100644
+index 82b826b..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Plot_PI-CANN_MAP_all_cy_2.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 2                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 2
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Plot_PI-CANN_MAP_all_cy_3.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Plot_PI-CANN_MAP_all_cy_3.pdf
+deleted file mode 100644
+index 97ba94a..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Plot_PI-CANN_MAP_all_cy_3.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 3                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 3
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Plot_PI-CANN_MAP_all_cy_4.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Plot_PI-CANN_MAP_all_cy_4.pdf
+deleted file mode 100644
+index 7fe72fb..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Plot_PI-CANN_MAP_all_cy_4.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 4                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 4
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Plot_PI-CANN_MAP_all_cy_5.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Plot_PI-CANN_MAP_all_cy_5.pdf
+deleted file mode 100644
+index bf97461..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Plot_PI-CANN_MAP_all_cy_5.pdf
++++ /dev/null
+@@ -1,21 +0,0 @@
+-                     0.6        data x                          I1
+-                                model x                         exp(I1)
+-Cauchy stress [MPa]                                             IeI212xp(I12)
+-                          load path: 5                          exp(I2)
+-                                                                IIe242xp(I22)
+-                     0.3                                        exp(I4)
+-                                                                eII542xp(I42)
+-                     0.0                                        exp(I5)
+-                                                                Ie52xp(I52)
+-                          1.0            s1t.1retch x [-]  1.2  Ie1xp(I1)
+-                                                                IeeI212xxpp((II122))
+-                     0.6        data y                          eIeI422xxpp((II242))
+-                                model y                         eIeI452xxpp((II542))
+-Cauchy stress [MPa]                                             eI52xp(I52)
+-                          load path: 5
+-
+-                     0.3
+-
+-                     0.0                 s1t.1retch y [-]  1.2
+-                           1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Plot_PI-CANN_skin.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Plot_PI-CANN_skin.pdf
+deleted file mode 100644
+index 4e5cbf1..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Plot_PI-CANN_skin.pdf
++++ /dev/null
+@@ -1,26 +0,0 @@
+-                     0.6          model x  data x                                        1.15
+-
+-                          R2: 0.824                                       stretch y [-]  1.10
+-                          R2: 0.965
+-Cauchy stress [MPa]       R2: 0.956                                                      1.05
+-                          R2: 0.973
+-                     0.3 R2: 0.273                                                       1.00  1.00  1.05 stre1t.1c0h x [-]1.15  1.20
+-
+-                          Ra2ll: 0.798
+-
+-                     0.0                           1.1stretch x [-]  1.2
+-                             1.0
+-
+-                     0.6          model y  data z
+-
+-Cauchy stress [MPa]       R2: 0.871
+-                          R2: 0.990
+-                          R2: 0.978
+-                          R2: 0.997
+-                     0.3 R2: 0.938
+-
+-                          Ra2ll: 0.955
+-
+-                     0.0                           1.1stretch y [-]  1.2
+-                             1.0
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Plot_loss_.pdf b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Plot_loss_.pdf
+deleted file mode 100644
+index a4becf2..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/Plot_loss_.pdf
++++ /dev/null
+@@ -1,14 +0,0 @@
+-              model loss
+-
+-      101
+-
+-      100
+-
+-loss
+-
+-      10 1
+-
+-      10 2
+-
+-      10 3 0  1000 2000 epo3c0h00 4000 5000
+-
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/checkpoint b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/checkpoint
+deleted file mode 100644
+index efd0621..0000000
+--- a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/checkpoint
++++ /dev/null
+@@ -1,2 +0,0 @@
+-model_checkpoint_path: "weights"
+-all_model_checkpoint_paths: "weights"
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/model.h5 b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/model.h5
+deleted file mode 100644
+index 5e35c13..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/model.h5 and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/weights.data-00000-of-00001 b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/weights.data-00000-of-00001
+deleted file mode 100644
+index ab4d65e..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/weights.data-00000-of-00001 and /dev/null differ
+diff --git a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/weights.index b/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/weights.index
+deleted file mode 100644
+index ca319dd..0000000
+Binary files a/CANNs/SKIN/Kshitij_Results/CANN4Skin_main/Model_p/all/weights.index and /dev/null differ
+diff --git a/CANNs/SKIN/ModelsSkin_p.py b/CANNs/SKIN/ModelsSkin_p.py
+index 181b662..2172946 100644
+--- a/CANNs/SKIN/ModelsSkin_p.py
++++ b/CANNs/SKIN/ModelsSkin_p.py
+@@ -26,6 +26,22 @@ def activation_ln(x):
+     return -1.0*tf.math.log(1.0 - (x))
+ 
+ 
++# Define a custom loss function that includes the additional term dPsidI1/I1
++def custom_loss(y_true, y_pred):
++
++    # Inputs defined
++    I1_in = tf.keras.Input(shape=(1,), name='I1')
++    I1_ref = keras.layers.Lambda(lambda x: (x-3.0))(I1_in)
++
++    mse = keras.losses.mean_squared_error(y_true, y_pred)
++    dPsidI1 = K.gradients(y_pred, I1_ref)[0]
++    print("dPsidI1 Calculation Done!!!")
++    additional_term = dPsidI1 / I1_ref
++    total_loss = mse + additional_term
++
++    return total_loss
++
++
+ # Define network block
+ def Net_Holzapfel(I1_ref,idi):
+     
+@@ -247,7 +263,7 @@ def modelArchitecture_I5(Psi_model,setAl, init):
+     model_BT = keras.models.Model(inputs=[Stretch_x, Stretch_y],  outputs= [Stress_xx_BT, Stress_yy_BT])
+ 
+     
+-    return model_BT
++    return model_BT, dWI1_BT
+ 
+ 
+ 
+diff --git a/CANNs/SKIN/__pycache__/ModelsSkin_p.cpython-311.pyc b/CANNs/SKIN/__pycache__/ModelsSkin_p.cpython-311.pyc
+index c94b240..3dd8f4b 100644
+Binary files a/CANNs/SKIN/__pycache__/ModelsSkin_p.cpython-311.pyc and b/CANNs/SKIN/__pycache__/ModelsSkin_p.cpython-311.pyc differ
+diff --git a/Least Squares_Fitting_Derivatives/Selected Functions.txt b/Least Squares_Fitting_Derivatives/Selected Functions.txt
+index b439fb9..0e5f2ce 100644
+--- a/Least Squares_Fitting_Derivatives/Selected Functions.txt	
++++ b/Least Squares_Fitting_Derivatives/Selected Functions.txt	
+@@ -1,100 +1,12 @@
+-D*T^0.75
+-D*T^5.0
+-D^2
+-D^2*T^0.5
+-D^2*T^2.0
+-D^3*T^1.25
+-D^3*T^3.75
+-D^4
+-D^4*T^0.25
+-D^4*T^0.75
+-D^4*T^1.5
+-D^4*T^2.5
+-D^4*T^3.75
+-D^4*T^5.0
++D*T**0.25
++D*T**1.5
++D*T**3.0
++D*T**5.0
++D**2
++D**2*T**0.75
++D**2*T**2.75
++D**4
+ D*exp(-D)
+-D^6*exp(-D)
+-D^6*T^0.5*exp(-D)
+-D^6*T^1.5*exp(-D)
+-D^6*T^5.0*exp(-D)
+-D^2*T^8*exp(-D^2)
+-D^6*T^8*exp(-D^2)
+-D^7*T^2*exp(-D^2)
+-D^7*T^4*exp(-D^2)
+-D^7*T^6*exp(-D^2)
+-D^8*exp(-D^2)
+-D^8*T*exp(-D^2)
+-D^8*T^2*exp(-D^2)
+-D^8*T^3*exp(-D^2)
+-D^8*T^5*exp(-D^2)
+-D^8*T^7*exp(-D^2)
+-D^8*T^8*exp(-D^2)
+-D*T^4*exp(-D^3)
+-D*T^13*exp(-D^3)
+-D^2*T^4*exp(-D^3)
+-D^3*T^3*exp(-D^3)
+-D^4*T*exp(-D^3)
+-D^4*T^16*exp(-D^3)
+-D^6*exp(-D^3)
+-D^7*T^2*exp(-D^3)
+-D^8*exp(-D^3)
+-D^8*T*exp(-D^3)
+-D^8*T^2*exp(-D^3)
+-D^8*T^5*exp(-D^3)
+-D^8*T^7*exp(-D^3)
+-D^8*T^10*exp(-D^3)
+-D^8*T^15*exp(-D^3)
+-D^8*T^16*exp(-D^3)
+-D*exp(-D^4)
+-D*T^2*exp(-D^4)
+-D*T^8*exp(-D^4)
+-D^3*exp(-D^4)
+-D^3*T^24*exp(-D^4)
+-D^5*exp(-D^4)
+-D^6*T^2*exp(-D^4)
+-D^6*T^4*exp(-D^4)
+-D^6*T^8*exp(-D^4)
+-D^7*exp(-D^4)
+-D^7*T^20*exp(-D^4)
+-D^8*T^2*exp(-D^4)
+-D^9*T^4*exp(-D^4)
+-D^9*T^12*exp(-D^4)
+-D^10*exp(-D^4)
+-D^10*T^2*exp(-D^4)
+-D^10*T^8*exp(-D^4)
+-D^10*T^12*exp(-D^4)
+-D^10*T^18*exp(-D^4)
+-D^10*T^24*exp(-D^4)
+-D*T^18*exp(-D^5)
+-D*T^24*exp(-D^5)
+-D*T^32*exp(-D^5)
+-D^2*T^16*exp(-D^5)
+-D^2*T^22*exp(-D^5)
+-D^2*T^32*exp(-D^5)
+-D^3*T^10*exp(-D^5)
+-D^5*T^14*exp(-D^5)
+-D^5*T^24*exp(-D^5)
+-D^5*T^32*exp(-D^5)
+-D^7*T^22*exp(-D^5)
+-D^10*T^10*exp(-D^5)
+-D^10*T^16*exp(-D^5)
+-D^10*T^24*exp(-D^5)
+-D^10*T^32*exp(-D^5)
+-D^8*T^10*exp(-D^6)
+-D^9*T^16*exp(-D^6)
+-D^10*T^28*exp(-D^6)
+-D^12*T^10*exp(-D^6)
+-D^12*T^12*exp(-D^6)
+-D^12*T^22*exp(-D^6)
+-D^12*T^32*exp(-D^6)
+-D^15*T^10*exp(-D^6)
+-D^15*T^12*exp(-D^6)
+-D^15*T^18*exp(-D^6)
+-D^15*T^24*exp(-D^6)
+-D^15*T^32*exp(-D^6)
+-D*((-T + 0.7*((D - 1)^2)^1.66666666666667 + 1)^2 + 0.300000011920929*(((D - 1)^2)^3.0)^0.875)*exp((15.0 - 15.0*D)*(D - 1))*exp((225.0 - 225.0*T)*(T - 1))
+-D*((-T + 0.7*((D - 1)^2)^1.66666666666667 + 1)^2 + 1.0*(((D - 1)^2)^3.0)^0.875)*exp((10.0 - 10.0*D)*(D - 1))*exp((225.0 - 225.0*T)*(T - 1))
+-D*((-T + 0.7*((D - 1)^2)^1.66666666666667 + 1)^2 + 1.0*(((D - 1)^2)^3.0)^0.875)*exp((10.0 - 10.0*D)*(D - 1))*exp((275.0 - 275.0*T)*(T - 1))
+-D*((-T + 0.7*((D - 1)^2)^1.66666666666667 + 1)^2 + 1.0*(((D - 1)^2)^3.5)^0.925000011920929)*exp((10.0 - 10.0*D)*(D - 1))*exp((225.0 - 225.0*T)*(T - 1))
+-D*((-T + 0.7*((D - 1)^2)^1.66666666666667 + 1)^2 + 0.300000011920929*(((D - 1)^2)^4.0)^0.925000011920929)*exp((10.0 - 10.0*D)*(D - 1))*exp((275.0 - 275.0*T)*(T - 1))
+-D*((-T + 0.7*((D - 1)^2)^1.66666666666667 + 1)^2 + 0.300000011920929*(((D - 1)^2)^4.0)^0.925000011920929)*exp((15.0 - 15.0*D)*(D - 1))*exp((275.0 - 275.0*T)*(T - 1))
+\ No newline at end of file
++D*T**0.5*exp(-D)
++D*T*exp(-D**3)
++D**3*exp(-D**4)
+\ No newline at end of file
+diff --git a/Least Squares_Fitting_Derivatives/__pycache__/data.cpython-311.pyc b/Least Squares_Fitting_Derivatives/__pycache__/data.cpython-311.pyc
+index 008ccbb..2b52174 100644
+Binary files a/Least Squares_Fitting_Derivatives/__pycache__/data.cpython-311.pyc and b/Least Squares_Fitting_Derivatives/__pycache__/data.cpython-311.pyc differ
+diff --git a/Least Squares_Fitting_Derivatives/__pycache__/main.cpython-311.pyc b/Least Squares_Fitting_Derivatives/__pycache__/main.cpython-311.pyc
+index 2fa3c9c..65b9fcb 100644
+Binary files a/Least Squares_Fitting_Derivatives/__pycache__/main.cpython-311.pyc and b/Least Squares_Fitting_Derivatives/__pycache__/main.cpython-311.pyc differ
+diff --git a/Span Wagner OMP on 42 Terms/Temperature_700K_ares_and_Cv.png b/Span Wagner OMP on 42 Terms/Temperature_700K_ares_and_Cv.png
+index a45ab16..f85f7aa 100644
+Binary files a/Span Wagner OMP on 42 Terms/Temperature_700K_ares_and_Cv.png and b/Span Wagner OMP on 42 Terms/Temperature_700K_ares_and_Cv.png differ
+diff --git a/Span Wagner OMP on 42 Terms/__pycache__/data.cpython-311.pyc b/Span Wagner OMP on 42 Terms/__pycache__/data.cpython-311.pyc
+index ddd2960..1a07038 100644
+Binary files a/Span Wagner OMP on 42 Terms/__pycache__/data.cpython-311.pyc and b/Span Wagner OMP on 42 Terms/__pycache__/data.cpython-311.pyc differ
+diff --git a/Span Wagner OMP on 42 Terms/__pycache__/main.cpython-311.pyc b/Span Wagner OMP on 42 Terms/__pycache__/main.cpython-311.pyc
+index 8d1ee63..e11a5ab 100644
+Binary files a/Span Wagner OMP on 42 Terms/__pycache__/main.cpython-311.pyc and b/Span Wagner OMP on 42 Terms/__pycache__/main.cpython-311.pyc differ
+diff --git a/Span Wagner OMP on 42 Terms/check.py b/Span Wagner OMP on 42 Terms/check.py
+index 35e6bbd..8cb601b 100644
+--- a/Span Wagner OMP on 42 Terms/check.py	
++++ b/Span Wagner OMP on 42 Terms/check.py	
+@@ -2,16 +2,21 @@ import matplotlib.pyplot as plt
+ from main import *
+ 
+ w_index = [i for i in range(0, data_points, 20)]
++colors = ['black', 'blue', 'orange', 'red', 'cyan']
+ 
++plt.figure(figsize=(12, 12))
+ for entry in w_index:
++    index = int(entry/20)
++    print("index = ", index)
+     print("Plotting for Temperature = ", int(304/df.iloc[entry][1]), " K")
+ 
+-    plt.figure(figsize=(12, 3))
+ 
+-    plt.subplot(1, 4, 1)
+-    plt.plot(input[entry::data_points, 0]*467, omp_output[entry:(data_points*data_points):data_points], label='ares', color='orange', marker='x', linestyle='None')
+-    plt.plot(input[entry::data_points, 0]*467, ares_CoolProp[entry:(data_points*data_points):data_points], label='ares - CoolProp', color='blue', linestyle='-')
+-    plt.title(f"ares for Temperature = {int(304/df.iloc[entry][1])} K")
++
++    plt.subplot(2, 2, 1)
++    plt.plot(input[entry::(4*data_points), 0]*467, omp_output[entry:(data_points*data_points):(4*data_points)], label=f'Temperature = {int(304/df.iloc[entry][1])} K', color=colors[index], marker='x', linestyle='None')
++    plt.plot(input[entry::(4*data_points), 0]*467, ares_ext[entry:(data_points*data_points):(4*data_points)], color=colors[index], marker='o', linestyle='None')
++    plt.plot(input[entry::(4*data_points), 0]*467, ares_CoolProp[entry:(data_points*data_points):(4*data_points)], color=colors[index], linestyle='-')
++    plt.title(f"ares")
+     plt.xlabel("Density (in kg/m3)")
+     plt.ylabel("ares")
+     plt.legend()
+@@ -19,61 +24,64 @@ for entry in w_index:
+     # Save the figure after showing it
+     # plt.savefig(f"Temperature_{int(304/df.iloc[entry][1])}K.png")
+ 
+-    plt.subplot(1, 4, 2)
++    plt.subplot(2, 2, 2)
+     # Assuming specific_heat_data is the specific heat data you want to plot
+-    plt.plot(input[entry::data_points, 0] * 467, Cv[entry::data_points], label='Specific Heat Cv', color='orange', marker='x', linestyle='None')
+-    plt.plot(input[entry::data_points, 0] * 467, specific_heat_V[entry::data_points], label='Specific Heat Cv - CoolProp', color='blue', linestyle='-')
++    plt.plot(input[entry::(4*data_points), 0] * 467, Cv[entry::(4*data_points)], label=f'Temperature = {int(304/df.iloc[entry][1])} K', color=colors[index], marker='x', linestyle='None')
++    plt.plot(input[entry::(4*data_points), 0]*467, Cv_ext[entry:(data_points*data_points):(4*data_points)], color=colors[index], marker='o', linestyle='None')
++    plt.plot(input[entry::(4*data_points), 0] * 467, specific_heat_V[entry::(4*data_points)], color=colors[index], linestyle='-')
+ 
+-    # plt.plot(input[entry::data_points, 0] * 467, -188.95*tau[entry::data_points]*tau[entry::data_points]*phi0_tt[entry::data_points], label='aideal_tt term - Span Wagner', , color='orange', marker='x', linestyle='None')
+-    # plt.plot(input[entry::data_points, 0] * 467, -188.95*tau[entry::data_points]*tau[entry::data_points]*aideal_tt_CoolProp[entry::data_points], label='aideal_tt term - CoolProp', color='blue', linestyle='-')
++    # plt.plot(input[entry::(4*data_points), 0] * 467, -188.95*tau[entry::(4*data_points)]*tau[entry::(4*data_points)]*phi0_tt[entry::(4*data_points)], label='aideal_tt term - Span Wagner', , color=colors[index], marker='x', linestyle='None')
++    # plt.plot(input[entry::(4*data_points), 0] * 467, -188.95*tau[entry::(4*data_points)]*tau[entry::(4*data_points)]*aideal_tt_CoolProp[entry::(4*data_points)], label='aideal_tt term - CoolProp', color=colors[index], linestyle='-')
+ 
+-    # plt.plot(input[entry::data_points, 0] * 467, -188.95*tau[entry::data_points]*tau[entry::data_points]*ares_tt[entry::data_points], label='ares_tt term - Span Wagner', , color='orange', marker='x', linestyle='None')
+-    # plt.plot(input[entry::data_points, 0] * 467, -188.95*tau[entry::data_points]*tau[entry::data_points]*ares_tt_CoolProp[entry::data_points], label='ares_tt term - CoolProp', color='blue', linestyle='-')
++    # plt.plot(input[entry::(4*data_points), 0] * 467, -188.95*tau[entry::(4*data_points)]*tau[entry::(4*data_points)]*ares_tt[entry::(4*data_points)], label='ares_tt term - Span Wagner', , color=colors[index], marker='x', linestyle='None')
++    # plt.plot(input[entry::(4*data_points), 0] * 467, -188.95*tau[entry::(4*data_points)]*tau[entry::(4*data_points)]*ares_tt_CoolProp[entry::(4*data_points)], label='ares_tt term - CoolProp', color=colors[index], linestyle='-')
+ 
+-    plt.title(f"Cv for Temperature = {int(304/df.iloc[entry][1])} K")
++    plt.title(f"Cv")
+     plt.xlabel("Density (in kg/m3)")
+     plt.ylabel("Specific Heat Cv (J/kgK)")
+     plt.legend()
+     plt.grid(True)
+ 
+-    plt.subplot(1, 4, 3)
++    plt.subplot(2, 2, 3)
+     # Assuming specific_heat_data is the specific heat data you want to plot
+-    plt.plot(input[entry::data_points, 0] * 467, Cp[entry::data_points], label='Specific Heat Cp', color='orange', marker='x', linestyle='None')
+-    plt.plot(input[entry::data_points, 0] * 467, specific_heat_P[entry::data_points], label='Specific Heat Cp - CoolProp', color='blue', linestyle='-')
+-    plt.title(f"Cp for Temperature = {int(304/df.iloc[entry][1])} K")
++    plt.plot(input[entry::(4*data_points), 0] * 467, Cp[entry::(4*data_points)], label=f'Temperature = {int(304/df.iloc[entry][1])} K', color=colors[index], marker='x', linestyle='None')
++    plt.plot(input[entry::(4*data_points), 0]*467, Cp_ext[entry:(data_points*data_points):(4*data_points)], color=colors[index], marker='o', linestyle='None')
++    plt.plot(input[entry::(4*data_points), 0] * 467, specific_heat_P[entry::(4*data_points)], color=colors[index], linestyle='-')
++    plt.title(f"Cp")
+     plt.xlabel("Density (in kg/m3)")
+     plt.ylabel("Specific Heat Cp (J/kgK)")
+     plt.legend()
+     plt.grid(True)
+ 
+ 
+-    plt.subplot(1, 4, 4)
++    plt.subplot(2, 2, 4)
+     # Assuming specific_heat_data is the specific heat data you want to plot
+-    plt.plot(input[entry::data_points, 0] * 467, w[entry::data_points], label='Sound Speed', color='orange', marker='x', linestyle='None')
+-    plt.plot(input[entry::data_points, 0] * 467, sound_speed[entry::data_points], label='Sound Speed - CoolProp', color='blue', linestyle='-')
+-    plt.title(f"w for Temperature = {int(304/df.iloc[entry][1])} K")
++    plt.plot(input[entry::(4*data_points), 0] * 467, w[entry::(4*data_points)], label=f'Temperature = {int(304/df.iloc[entry][1])} K', color=colors[index], marker='x', linestyle='None')
++    plt.plot(input[entry::(4*data_points), 0]*467, w_ext[entry:(data_points*data_points):(4*data_points)], color=colors[index], marker='o', linestyle='None')
++    plt.plot(input[entry::(4*data_points), 0] * 467, sound_speed[entry::(4*data_points)], color=colors[index], linestyle='-')
++    plt.title(f"Sound Speed")
+     plt.xlabel("Density (in kg/m3)")
+     plt.ylabel("Sound Speed")
+     plt.legend()
+     plt.grid(True)
+ 
+     # Assuming specific_heat_data is the specific heat data you want to plot
+-    # plt.plot(input[entry::data_points, 0] * 467, phi0[entry::data_points], label='a_ideal Span Wagner', , color='orange', marker='x', linestyle='None')
+-    # plt.plot(input[entry::data_points, 0] * 467, aideal_CoolProp[entry::data_points], label='a_ideal - CoolProp', color='blue', linestyle='-')
+-    # # plt.plot(input[entry::data_points, 0] * 467, a_ideal_deviation[entry::data_points], label='a_ideal_deviation', marker='+', linestyle='None')
++    # plt.plot(input[entry::(4*data_points), 0] * 467, phi0[entry::(4*data_points)], label='a_ideal Span Wagner', , color=colors[index], marker='x', linestyle='None')
++    # plt.plot(input[entry::(4*data_points), 0] * 467, aideal_CoolProp[entry::(4*data_points)], label='a_ideal - CoolProp', color=colors[index], linestyle='-')
++    # # plt.plot(input[entry::(4*data_points), 0] * 467, a_ideal_deviation[entry::(4*data_points)], label='a_ideal_deviation', marker='+', linestyle='None')
+     # plt.title(f"a_ideal for Temperature = {int(304/df.iloc[entry][1])} K")
+     # plt.xlabel("Density (in kg/m3)")
+     # plt.ylabel("a_ideal")
+     # plt.legend()
+     # plt.grid(True)
+ 
+-    # Adjust layout for better spacing
+-    plt.tight_layout()
++# Adjust layout for better spacing
++plt.tight_layout()
+ 
+-    # Save the figure after showing it
+-    plt.savefig(f"Temperature_{int(304/df.iloc[entry][1])}K_ares_and_Cv.png")
++# Save the figure after showing it
++plt.savefig(f"Temperature_{int(304/df.iloc[entry][1])}K_ares_and_Cv.png")
+ 
+-    # Show the plot
+-    plt.show()
++# Show the plot
++plt.show()
+ 
+ 
+diff --git a/Span Wagner OMP on 42 Terms/compressibility_check.py b/Span Wagner OMP on 42 Terms/compressibility_check.py
+index cbc5519..8c4cb1e 100644
+--- a/Span Wagner OMP on 42 Terms/compressibility_check.py	
++++ b/Span Wagner OMP on 42 Terms/compressibility_check.py	
+@@ -42,6 +42,7 @@ def create_dataset(fluid):
+     P_values_test = Pc*Pr
+     # tau_values_test = (Tc/T)*np.ones(data_points_test)
+     tau_values_test = np.linspace(0.434, 0.76, data_points_test)
++    # tau_values_test = np.linspace(0.1666, 0.333, data_points_test)
+ 
+ 
+     for i in range(data_points_test):
+@@ -101,17 +102,22 @@ def create_dataset(fluid):
+ 
+ 
+ 
++
++
+ # model = MyNetwork(0)
+-indices = [0, 1, 2, 3, 4, 5, 6, 7, 8]
++indices = [1]
+ colors = ['blue', 'red', 'orange', 'green', 'black', 'gold', 'cyan', 'pink', 'purple']
++w_index = [i for i in range(0, 100, 20)]
++
+ 
+-# plt.figure(figsize=(12, 10))
++plt.figure(figsize=(14, 12))
+ for (p, index) in enumerate(indices):
++    print("Plotting for Fluid = ", fluids[index])
+     input_test, compressibility_CoolProp, sound_speed_CP_test, specific_heat_V_CP_test, specific_heat_P_CP_test, P_values_test, ares_test_CoolProp, ares_d_test_CoolProp, ares_dt_test_CoolProp, ares_dd_test_CoolProp, ares_tt_test_CoolProp, aideal_tt_test_CoolProp, Tc, rhoc, df_test, ares_t_test_CoolProp = create_dataset(fluids[index])
+-    ares_test_omp, ares_d_test_omp, ares_dd_test_omp, ares_dt_test_omp, ares_t_test_omp, ares_tt_test_omp, _, _, _ = model(input_test)
++    ares_test_omp, ares_d_test_omp, ares_dd_test_omp, ares_dt_test_omp, ares_t_test_omp, ares_tt_test_omp, _, _, _ = model(input_test)  
+ 
+-    ls_matrix = torch.cat((ares_test_omp, ares_d_test_omp, ares_dd_test_omp, ares_dt_test_omp, ares_tt_test_omp, ares_t_test_omp), dim=0)
+-    ls_matrix_rhs = torch.cat((ares_test_CoolProp, ares_d_test_CoolProp, ares_dd_test_CoolProp, ares_dt_test_CoolProp, ares_tt_test_CoolProp, ares_t_test_CoolProp), dim=0)
++    ls_matrix = torch.cat((ares_test_omp, ares_d_test_omp, ares_dd_test_omp, ares_dt_test_omp, ares_tt_test_omp), dim=0)
++    ls_matrix_rhs = torch.cat((ares_test_CoolProp, ares_d_test_CoolProp, ares_dd_test_CoolProp, ares_dt_test_CoolProp, ares_tt_test_CoolProp), dim=0)
+     x_ls, _, _, _ = np.linalg.lstsq(ls_matrix[:, nonzero_indices].numpy(), ls_matrix_rhs.numpy().reshape(-1,1), rcond=None)
+ 
+     ares_d_test_omp = ares_d_test_omp[:, nonzero_indices].numpy() @ x_ls
+@@ -132,109 +138,89 @@ for (p, index) in enumerate(indices):
+     w_omp_test = 1 + 2*delta_test*ares_d_test_omp + (delta_test**2)*ares_dd_test_omp - w1
+     w_omp_test = np.sqrt(w_omp_test*((Tc/input_test[:,1].numpy()).reshape(-1,1))*R_fluid[fluids[index]])
+ 
+-    # print("Cv Deviations = ", Cv_omp_test - specific_heat_V_CP_test.numpy())
+-    # print("\nCp Deviations = ", Cp_omp_test - specific_heat_P_CP_test.numpy())
+-    # print("\nw Deviations = ", w_omp_test - sound_speed_CP_test.numpy())
+ 
+ 
+ 
++    # extended_model = MyNetwork_extension(0)
++    # A_ext, ares_d_ext, ares_dd_ext, ares_dt_ext, ares_t_ext, ares_tt_ext, _, phi0_ext, functions_ext = extended_model(input)
+ 
+-#     plt.subplot(2, 2, 1)
+-#     # Assuming specific_heat_data is the specific heat data you want to plot
+-#     plt.plot(P_values_test[::5]/1e5, Cv_omp_test[::5], label=f'Cv {str(fluids[index])}', color=colors[p], marker='x', linestyle='None')
+-#     plt.plot(P_values_test/1e5, specific_heat_V_CP_test, color=colors[p], linestyle='-')
+-#     # plt.yscale('log')
++    # ares_ext = A_ext.numpy() @ n
++    # ares_d_ext = ares_d_ext.numpy() @ n
++    # ares_dd_ext = ares_dd_ext.numpy() @ n
++    # ares_dt_ext = ares_dt_ext.numpy() @ n
++    # ares_t_ext = ares_t_ext.numpy() @ n
++    # ares_tt_ext = ares_tt_ext.numpy() @ n
++    # # phi0_tt_ext = phi0_tt_ext.numpy().reshape((-1,1))
+ 
+-#     plt.title(f"Cv - 5 Terms")
+-#     plt.xlabel("Pressure (in bars)")
+-#     plt.ylabel("Specific Heat Cv (J/kgK)")
+-#     plt.legend()
+-#     plt.grid(True)
++    # Cv_ext = -R_fluid[fluids[index]]*(tau**2)*(aideal_tt_test_CoolProp + ares_tt_ext)
++    # Cp_ext = R_fluid[fluids[index]]*(-1*(tau**2)*(aideal_tt_test_CoolProp + ares_tt_ext) + ((1 + delta*ares_d_ext - delta*tau*ares_dt_ext)**2/(1 + 2*delta*ares_d_ext + delta*delta*ares_dd_ext))) 
+ 
+-#     plt.subplot(2, 2, 2)
+-#     # Assuming specific_heat_data is the specific heat data you want to plot
+-#     plt.plot(P_values_test[::5]/1e5, Cp_omp_test[::5], label=f'Cp {str(fluids[index])}', color=colors[p], marker='x', linestyle='None')
+-#     plt.plot(P_values_test/1e5, specific_heat_P_CP_test, color=colors[p], linestyle='-')
+-#     # plt.yscale('log')
++    # w1_ext = ((1 + delta*ares_d_ext - delta*tau*ares_dt_ext)**2)/((tau**2)*(aideal_tt_test_CoolProp + ares_tt_ext))
++    # w1_ext = w1_ext.reshape(-1,1)
++    # w_ext = 1 + 2*delta*ares_d_ext + (delta**2)*ares_dd_ext - w1_ext
++    # w_ext = np.sqrt(w_ext*((Tc/input[:,1].numpy()).reshape(-1,1))*R_fluid[fluids[index]])
+ 
+-#     plt.title(f"Cp - 5 Terms")
+-#     plt.xlabel("Pressure (in bars)")
+-#     plt.ylabel("Specific Heat Cp (J/kgK)")
+-#     plt.legend()
+-#     plt.grid(True)
++    # compressibility_ext = 1 + delta*ares_d_ext
+ 
+ 
+-#     plt.subplot(2, 2, 3)
+-#     # Assuming specific_heat_data is the specific heat data you want to plot
+-#     plt.plot(P_values_test[::5]/1e5, w_omp_test[::5], label=f'Sound Speed {str(fluids[index])}', color=colors[p], marker='x', linestyle='None')
+-#     plt.plot(P_values_test/1e5, sound_speed_CP_test, color=colors[p], linestyle='-')
+-#     # plt.yscale('log')
+ 
+-#     plt.title(f"Sound Speed - 5 Terms")
+-#     plt.xlabel("Pressure (in bars)")
+-#     plt.ylabel("Sound Speed")
+-#     plt.legend()
+-#     plt.grid(True)
+ 
+-#     plt.tight_layout()
+ 
+-#     plt.subplot(2, 2, 4)
+-#     # Assuming specific_heat_data is the specific heat data you want to plot
+-#     plt.plot(x_ls, label=f'Coeffs {str(fluids[index])}', color=colors[p], marker='x', linestyle='-')
+ 
+-#     plt.title(f"Coefficients")
+-#     plt.xlabel("Term Number")
+-#     plt.ylabel("Magnitude")
+-#     plt.legend()
+-#     plt.grid(True)
+ 
+-#     plt.tight_layout()
+ 
+-# plt.show()
+ 
+-    # Save the figure after showing it
+-    # plt.savefig(f"Temperature_{int(Tc/df_test.iloc[entry][1])}K_ares_and_Cv.png")
+ 
+-    # plt.show()
+ 
+-    # plt.figure()
+-    # plt.plot(P_values_test, compressibility_CoolProp, label='CoolProp', linestyle='-', color='blue')
+-    # plt.plot(P_values_test[::5], compressibility_omp[::5], label='OMP Data', marker='x', linestyle='None', color='orange')
+-    # plt.title(f'{str(fluids[index])} at {temperature[fluids[index]]} K')
+-    # plt.xlabel('Pressure (in atm)')
+-    # plt.ylabel('Compressibility')
+-    # plt.grid('True')
+-    # plt.legend()
++
++    # for entry in w_index:
++    #     index = int(entry/20)
++    #     print("index = ", index)
++    #     print("Plotting for Temperature = ", int(Tc/df.iloc[entry][1]), " K")
++
++    #     plt.subplot(2, 2, 1)
++    #     plt.plot(input[entry::(4*data_points), 0]*rhoc, compressibility_omp[entry:(data_points*data_points):(4*data_points)], color=colors[index], marker='x', linestyle='None', label=f'OMP {int(Tc/df.iloc[entry][1])} K')
++    #     plt.plot(input[entry::(4*data_points), 0]*rhoc, compressibility_ext[entry:(data_points*data_points):(4*data_points)], color=colors[index], marker='o', linestyle='None', label=f'SW Ext {int(Tc/df.iloc[entry][1])} K')
++    #     plt.plot(input[entry::(4*data_points), 0]*rhoc, compressibility_CoolProp[entry:(data_points*data_points):(4*data_points)], color=colors[index], linestyle='-')
++    #     plt.title(f"Compressibility")
++    #     # plt.xlabel("Density (in kg/m3)")
++    #     plt.ylabel("Compressibility")
++    #     plt.legend()
++    #     plt.grid(True)
++
++    #     plt.subplot(2, 2, 2)
++    #     plt.plot(input[entry::(4*data_points), 0]*rhoc, Cv_omp_test[entry:(data_points*data_points):(4*data_points)], color=colors[index], marker='x', linestyle='None', label=f'OMP {int(Tc/df.iloc[entry][1])} K')
++    #     plt.plot(input[entry::(4*data_points), 0]*rhoc, Cv_ext[entry:(data_points*data_points):(4*data_points)], color=colors[index], marker='o', linestyle='None', label=f'SW Ext {int(Tc/df.iloc[entry][1])} K')
++    #     plt.plot(input[entry::(4*data_points), 0]*rhoc, specific_heat_V_CP_test[entry:(data_points*data_points):(4*data_points)], color=colors[index], linestyle='-')
++    #     plt.title(f"Cv")
++    #     # plt.xlabel("Density (in kg/m3)")
++    #     plt.ylabel("Cv")
++    #     plt.legend()
++    #     plt.grid(True)
++
++    #     plt.subplot(2, 2, 3)
++    #     plt.plot(input[entry::(4*data_points), 0]*rhoc, Cp_omp_test[entry:(data_points*data_points):(4*data_points)], color=colors[index], marker='x', linestyle='None', label=f'OMP {int(Tc/df.iloc[entry][1])} K')
++    #     plt.plot(input[entry::(4*data_points), 0]*rhoc, Cp_ext[entry:(data_points*data_points):(4*data_points)], color=colors[index], marker='o', linestyle='None', label=f'SW Ext {int(Tc/df.iloc[entry][1])} K')
++    #     plt.plot(input[entry::(4*data_points), 0]*rhoc, specific_heat_P_CP_test[entry:(data_points*data_points):(4*data_points)], color=colors[index], linestyle='-')
++    #     plt.title(f"Cp")
++    #     plt.xlabel("Density (in kg/m3)")
++    #     plt.ylabel("Cp")
++    #     plt.legend()
++    #     plt.grid(True)
++
++    #     plt.subplot(2, 2, 4)
++    #     plt.plot(input[entry::(4*data_points), 0]*rhoc, w_omp_test[entry:(data_points*data_points):(4*data_points)], color=colors[index], marker='x', linestyle='None', label=f'OMP {int(Tc/df.iloc[entry][1])} K')
++    #     plt.plot(input[entry::(4*data_points), 0]*rhoc, w_ext[entry:(data_points*data_points):(4*data_points)], color=colors[index], marker='o', linestyle='None', label=f'SW Ext {int(Tc/df.iloc[entry][1])} K')
++    #     plt.plot(input[entry::(4*data_points), 0]*rhoc, sound_speed_CP_test[entry:(data_points*data_points):(4*data_points)], color=colors[index], linestyle='-')
++    #     plt.title(f"Sound Speed")
++    #     plt.xlabel("Density (in kg/m3)")
++    #     plt.ylabel("Sound Speed")
++    #     plt.legend()
++    #     plt.grid(True)
++
++    #     plt.tight_layout()
+     # plt.show()
+ 
+-    print(f"Plotting for fluid: {str(fluids[index])} ")
+-    plt.figure()
+-    plt.plot(compressibility_CoolProp[::5], compressibility_omp[::5], marker='x', linestyle='None', color='orange')
+-    plt.plot(compressibility_CoolProp, compressibility_CoolProp, linestyle='-', color='blue')
+-    plt.title(f'Compressibility {str(fluids[index])}')
+-    plt.grid('True')
+-    plt.show()
+-
+-    plt.figure()
+-    plt.plot(specific_heat_V_CP_test[::5], Cv_omp_test[::5], marker='x', linestyle='None', color='orange')
+-    plt.plot(specific_heat_V_CP_test, specific_heat_V_CP_test, linestyle='-', color='blue')
+-    plt.title(f"Cv {str(fluids[index])}")
+-    plt.grid('True')
+-    plt.show()
+-
+-    plt.figure()
+-    plt.plot(specific_heat_P_CP_test[::5], Cp_omp_test[::5], marker='x', linestyle='None', color='orange')
+-    plt.plot(specific_heat_P_CP_test, specific_heat_P_CP_test, linestyle='-', color='blue')
+-    plt.title(f"Cp {str(fluids[index])}")
+-    plt.grid('True')
+-    plt.show()
+-
+-    plt.figure()
+-    plt.plot(sound_speed_CP_test[::5], w_omp_test[::5], marker='x', linestyle='None', color='orange')
+-    plt.plot(sound_speed_CP_test, sound_speed_CP_test, linestyle='-', color='blue')
+-    plt.title(f"Sound Speed {str(fluids[index])}")
+-    plt.grid('True')
+-    plt.show()
+ 
+ 
+ 
+diff --git a/Span Wagner OMP on 42 Terms/main.py b/Span Wagner OMP on 42 Terms/main.py
+index 185e7ef..006f6f4 100644
+--- a/Span Wagner OMP on 42 Terms/main.py	
++++ b/Span Wagner OMP on 42 Terms/main.py	
+@@ -1,4 +1,5 @@
+ from model_sympy_simplified import *
++from model_sympy_simplified_extension import *
+ from data import *
+ # from utils import *
+ import torch
+@@ -17,17 +18,6 @@ model = MyNetwork(0)
+ A, ares_d, ares_dd, ares_dt, ares_t, ares_tt, phi0_tt, phi0, functions = model(input)
+ b = ares_CoolProp.clone()
+ 
+-# mean1 = torch.mean(b).item()
+-# mean2 = torch.mean(ares_tt_CoolProp).item()
+-
+-# print("mean1 = ", mean1)
+-# print("mean2 = ", mean2)
+-
+-# scaling_factor = mean2/mean1
+-
+-# A = A*scaling_factor
+-# b = b*scaling_factor
+-
+ A_full = torch.cat((A, ares_tt, ares_d, ares_dt, ares_dd, ares_t), dim=0)
+ b_full = torch.cat((b, ares_tt_CoolProp, ares_d_CoolProp, ares_dt_CoolProp, ares_dd_CoolProp, ares_t_CoolProp), dim=0)
+ 
+@@ -154,26 +144,71 @@ for index, element in enumerate(nonzero_indices):
+ # print("\nCp Deviations = ", Cp - specific_heat_P.numpy())
+ # print("\nw Deviations = ", w - sound_speed.numpy())
+     
++n_co2 = np.array([0.89875108,
++              -2.1281985,
++              -0.068190320,
++              0.076355306,
++              0.00022053253,
++              0.41541823,
++              0.71335657,
++              0.00030354234,
++              -0.36643143,
++              -0.0014407781,
++              -0.089166707,
++              -0.023699887])
+ 
+-# plt.figure()
+-# plt.plot(specific_heat_V[::], Cv[::], marker='x', linestyle='None', color='orange')
+-# plt.plot(specific_heat_V, specific_heat_V, linestyle='-', color='blue')
+-# plt.title("Cv")
++
++n_nh3 = np.array([0.73022720,
++                  -1.1879116,
++                  -0.68319136,
++                  0.040028683,
++                  0.000090801215,
++                  -0.056216175,
++                  0.44935601,
++                  0.029897121,
++                  -0.18181684,
++                  -0.098416660,
++                  -0.055083744,
++                  -0.0088983219])
++
++n_co2 = n_co2.reshape(-1,1)
++n_nh3 = n_nh3.reshape(-1,1)
++n = n_nh3.copy()
++
++
++
++
++
++
++
++
++# plt.figure(figsize=(12, 10))
++
++# plt.subplot(2,2,1)
++# plt.plot(ares_d_CoolProp, ares_d, marker='x', linestyle='None', color='orange')
++# plt.plot(ares_d_CoolProp, ares_d_CoolProp, linestyle='-', color='blue')
++# plt.title("ares_d")
+ # plt.grid('True')
+-# plt.show()
+ 
+-# plt.figure()
+-# plt.plot(specific_heat_P[::], Cp[::], marker='x', linestyle='None', color='orange')
+-# plt.plot(specific_heat_P, specific_heat_P, linestyle='-', color='blue')
+-# plt.title("Cp")
++# plt.subplot(2,2,2)
++# plt.plot(ares_dd_CoolProp, ares_dd, marker='x', linestyle='None', color='orange')
++# plt.plot(ares_dd_CoolProp, ares_dd_CoolProp, linestyle='-', color='blue')
++# plt.title("ares_dd")
+ # plt.grid('True')
+-# plt.show()
+ 
+-# plt.figure()
+-# plt.plot(sound_speed[::], w[::], marker='x', linestyle='None', color='orange')
+-# plt.plot(sound_speed, sound_speed, linestyle='-', color='blue')
+-# plt.title("Sound Speed")
++# plt.subplot(2,2,3)
++# plt.plot(ares_dt_CoolProp, ares_dt, marker='x', linestyle='None', color='orange')
++# plt.plot(ares_dt_CoolProp, ares_dt_CoolProp, linestyle='-', color='blue')
++# plt.title("ares_dt")
++# plt.grid('True')
++
++# plt.subplot(2,2,4)
++# plt.plot(ares_tt_CoolProp, ares_tt, marker='x', linestyle='None', color='orange')
++# plt.plot(ares_tt_CoolProp, ares_tt_CoolProp, linestyle='-', color='blue')
++# plt.title("ares_tt")
+ # plt.grid('True')
++
++# plt.tight_layout()
+ # plt.show()
+ 
+ 
+@@ -183,3 +218,4 @@ for index, element in enumerate(nonzero_indices):
+ 
+ 
+ 
++

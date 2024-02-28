@@ -1,0 +1,35 @@
+2024-02-20 10:20:00,194 INFO    Thread-10 (_run_job):1508 [wandb_setup.py:_flush():76] Current SDK version is 0.15.12
+2024-02-20 10:20:00,194 INFO    Thread-10 (_run_job):1508 [wandb_setup.py:_flush():76] Configure stats pid to 1508
+2024-02-20 10:20:00,195 INFO    Thread-10 (_run_job):1508 [wandb_setup.py:_flush():76] Loading settings from C:\Users\kshit\.config\wandb\settings
+2024-02-20 10:20:00,195 INFO    Thread-10 (_run_job):1508 [wandb_setup.py:_flush():76] Loading settings from E:\Independent-Study\Sparse_Regression_42_Func\wandb\settings
+2024-02-20 10:20:00,195 INFO    Thread-10 (_run_job):1508 [wandb_setup.py:_flush():76] Loading settings from environment variables: {'project': 'Sparse Regression 7 - 42 functions - Normalized', 'entity': 'kshitijg64', 'root_dir': 'E:\\Independent-Study\\Sparse_Regression_42_Func', 'sweep_id': '6ofjvxyx', 'run_id': '9wpczbre', 'sweep_param_path': 'E:\\Independent-Study\\Sparse_Regression_42_Func\\wandb\\sweep-6ofjvxyx\\config-9wpczbre.yaml'}
+2024-02-20 10:20:00,195 INFO    Thread-10 (_run_job):1508 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-02-20 10:20:00,195 INFO    Thread-10 (_run_job):1508 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'Sparse_Regression_42_Func\\main.py', 'program_abspath': 'E:\\Independent-Study\\Sparse_Regression_42_Func\\main.py', 'program': 'E:\\Independent-Study\\Sparse_Regression_42_Func\\main.py'}
+2024-02-20 10:20:00,196 INFO    Thread-10 (_run_job):1508 [wandb_init.py:_log_setup():528] Logging user logs to E:\Independent-Study\Sparse_Regression_42_Func\wandb\run-20240220_102000-9wpczbre\logs\debug.log
+2024-02-20 10:20:00,196 INFO    Thread-10 (_run_job):1508 [wandb_init.py:_log_setup():529] Logging internal logs to E:\Independent-Study\Sparse_Regression_42_Func\wandb\run-20240220_102000-9wpczbre\logs\debug-internal.log
+2024-02-20 10:20:00,196 INFO    Thread-10 (_run_job):1508 [wandb_init.py:init():568] calling init triggers
+2024-02-20 10:20:00,196 INFO    Thread-10 (_run_job):1508 [wandb_init.py:init():575] wandb.init called with sweep_config: {'batch_size': 32, 'epochs': 200, 'learning_rate': 0.001, 'reg_factor': 0.001, 'seed': 0}
+config: {}
+2024-02-20 10:20:00,196 INFO    Thread-10 (_run_job):1508 [wandb_init.py:init():618] starting backend
+2024-02-20 10:20:00,196 INFO    Thread-10 (_run_job):1508 [wandb_init.py:init():622] setting up manager
+2024-02-20 10:20:00,206 INFO    Thread-10 (_run_job):1508 [backend.py:_multiprocessing_setup():105] multiprocessing start_methods=spawn, using: spawn
+2024-02-20 10:20:00,211 INFO    Thread-10 (_run_job):1508 [wandb_init.py:init():628] backend started and connected
+2024-02-20 10:20:00,226 INFO    Thread-10 (_run_job):1508 [wandb_run.py:_config_callback():1324] config_cb None None {'batch_size': 32, 'epochs': 200, 'learning_rate': 0.001, 'reg_factor': 0.001, 'seed': 0}
+2024-02-20 10:20:00,228 INFO    Thread-10 (_run_job):1508 [wandb_init.py:init():720] updated telemetry
+2024-02-20 10:20:00,394 INFO    Thread-10 (_run_job):1508 [wandb_init.py:init():753] communicating run to backend with 90.0 second timeout
+2024-02-20 10:20:00,661 INFO    Thread-10 (_run_job):1508 [wandb_run.py:_on_init():2220] communicating current version
+2024-02-20 10:20:00,792 INFO    Thread-10 (_run_job):1508 [wandb_run.py:_on_init():2229] got version response upgrade_message: "wandb version 0.16.3 is available!  To upgrade, please run:\n $ pip install wandb --upgrade"
+
+2024-02-20 10:20:00,792 INFO    Thread-10 (_run_job):1508 [wandb_init.py:init():804] starting run threads in backend
+2024-02-20 10:20:08,445 INFO    Thread-10 (_run_job):1508 [wandb_run.py:_console_start():2199] atexit reg
+2024-02-20 10:20:08,447 INFO    Thread-10 (_run_job):1508 [wandb_run.py:_redirect():2054] redirect: wrap_raw
+2024-02-20 10:20:08,448 INFO    Thread-10 (_run_job):1508 [wandb_run.py:_redirect():2119] Wrapping output streams.
+2024-02-20 10:20:08,448 INFO    Thread-10 (_run_job):1508 [wandb_run.py:_redirect():2144] Redirects installed.
+2024-02-20 10:20:08,448 INFO    Thread-10 (_run_job):1508 [wandb_init.py:init():845] run started, returning control to user process
+2024-02-20 10:22:12,999 INFO    Thread-10 (_run_job):1508 [wandb_run.py:_finish():1934] finishing run kshitijg64/Sparse Regression 7 - 42 functions - Normalized/9wpczbre
+2024-02-20 10:22:12,999 INFO    Thread-10 (_run_job):1508 [wandb_run.py:_atexit_cleanup():2168] got exitcode: 0
+2024-02-20 10:22:12,999 INFO    Thread-10 (_run_job):1508 [wandb_run.py:_restore():2151] restore
+2024-02-20 10:22:12,999 INFO    Thread-10 (_run_job):1508 [wandb_run.py:_restore():2157] restore done
+2024-02-20 10:22:17,678 INFO    Thread-10 (_run_job):1508 [wandb_run.py:_footer_history_summary_info():3599] rendering history
+2024-02-20 10:22:17,678 INFO    Thread-10 (_run_job):1508 [wandb_run.py:_footer_history_summary_info():3631] rendering summary
+2024-02-20 10:22:17,678 INFO    Thread-10 (_run_job):1508 [wandb_run.py:_footer_sync_info():3558] logging synced files
