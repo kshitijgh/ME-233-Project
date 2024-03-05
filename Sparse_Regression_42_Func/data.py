@@ -6,13 +6,6 @@ from torch.utils.data import DataLoader, TensorDataset
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from model import *
 
-# delta1_values = np.linspace(0.5, 0.95, 100)
-# delta2_values = np.linspace(1.05, 1.5, 100)
-# tau1_values = np.linspace(304/350, 304/306, 100)
-# tau2_values = np.linspace(304/302, 304/280, 100)
-
-# delta_values = np.concatenate((delta1_values, delta2_values))
-# tau_values = np.concatenate((tau1_values, tau2_values))
 
 delta_values = np.linspace(0.5, 1.5, 100)
 tau_values = np.linspace(304/500, 304/280, 100)
@@ -41,10 +34,6 @@ output = torch.zeros([a,1])
 for i in range(a):
     output[i,0] = PropsSI('alphar', 'T', 304/df.iloc[i, 1], 'D', df.iloc[i, 0]*467, 'CO2')
 
-print("Before normalization: input = ", input)
-print()
-print("Before normalization: output = ", output)
-print()
 
 input = Data_PreProcess(input)
 
