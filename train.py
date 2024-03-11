@@ -6,6 +6,7 @@ from sklearn.preprocessing import StandardScaler
 import numpy as np
 from model_34 import *
 from data_hw import input, output
+from sklearn.model_selection import train_test_split
 
 # Define hyperparameters
 learning_rate = 0.001
@@ -28,6 +29,7 @@ class CustomDataset(Dataset):
         self.targets = output_data
 
     def __len__(self):
+        print("Shape = ", self.inputs.shape)
         return len(self.inputs)
 
     def __getitem__(self, idx):
@@ -49,8 +51,27 @@ class CustomLoss(nn.Module):
         return total_loss
 
 # Initialize dataset and dataloader
-dataset = CustomDataset(input, output)
-dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+# dataset = CustomDataset(input, output)
+# dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+
+# print(len(dataloader))
+
+
+
+# Split dataset into training and testing sets
+x_train, x_test, y_train, y_test = train_test_split(input, output, test_size=0.2, random_state=42)
+
+# Initialize training and testing datasets and dataloaders
+train_dataset = CustomDataset(x_train, y_train)
+test_dataset = CustomDataset(x_test, y_test)
+
+train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+
+
+
+
+
 
 # Initialize model
 model = MyNetwork(seed=42)
