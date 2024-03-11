@@ -37,7 +37,7 @@ df = pd.merge(df_d, df_t, on='key', how='outer').drop(columns=['key'])
 df = df[['d', 't']]
 
 ################################# INPUT VALUES ##########################
-print(df)
+# print(df)
 ################################# INPUT VALUES ##########################
 
 
@@ -55,7 +55,7 @@ for i in range(a):
 
 
 ################################# OUTPUT VALUES ##########################
-print(output)
+print(input.shape)
 ################################# OUTPUT VALUES ##########################
     
 
