@@ -17,8 +17,8 @@ x_train, x_test, y_train, y_test = train_test_split(input, output, test_size=0.2
 learning_rate = 0.0001
 batch_size = 64
 num_epochs = 1000
-regularization_term = 5e-5
-Lp = 0.75
+regularization_term = 5e-6
+Lp = 1
 
 # Custom dataset class
 class CustomDataset(Dataset):
