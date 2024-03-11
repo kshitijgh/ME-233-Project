@@ -58,5 +58,5 @@ class MyNetwork(nn.Module):
     def forward(self, input):
         # x = self.batch_norm_input(input)
         x = Data_PreProcess(input)
-        x = self.input_layer(x)
+        x = self.input_layer(x.float())
         return x

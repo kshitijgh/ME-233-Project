@@ -7,6 +7,8 @@ import numpy as np
 from model_34 import *
 from data_hw import input, output
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score
+from matplotlib  import pyplot as plt
 
 # Split dataset into training, validation, and test sets (70-20-10)
 x_train, x_test, y_train, y_test = train_test_split(input, output, test_size=0.2, random_state=42)
@@ -14,8 +16,8 @@ x_train, x_test, y_train, y_test = train_test_split(input, output, test_size=0.2
 # Define hyperparameters
 learning_rate = 0.001
 batch_size = 64
-num_epochs = 100
-regularization_term = 0.0001
+num_epochs = 1000
+regularization_term = 0
 
 # Custom dataset class
 class CustomDataset(Dataset):
@@ -35,7 +37,8 @@ class CustomDataset(Dataset):
         return len(self.inputs)
 
     def __getitem__(self, idx):
-        return torch.tensor(self.inputs[idx], dtype=torch.float32), torch.tensor(self.targets[idx], dtype=torch.float32)
+        return self.inputs[idx].clone().detach(), self.targets[idx].clone().detach()
+
 
 # Custom loss function with L1 regularization
 class CustomLoss(nn.Module):
@@ -45,7 +48,7 @@ class CustomLoss(nn.Module):
         self.regularization_term = regularization_term
 
     def forward(self, output, target):
-        mse_loss = nn.functional.mse_loss(output, target)
+        mse_loss = nn.functional.mse_loss(output, target.squeeze())
         l1_loss = torch.tensor(0.0)
         for param in self.model.parameters():
             l1_loss += torch.norm(param, p=1)
@@ -59,8 +62,6 @@ test_dataset = CustomDataset(x_test, y_test)
 train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
-print(x_train.shape)
-print(x_test.shape)
 # Initialize model
 model = MyNetwork(seed=42)
 
@@ -72,6 +73,8 @@ criterion = CustomLoss(model, regularization_term)
 for epoch in range(num_epochs):
     model.train()
     epoch_train_loss = 0.0
+    y_true_train = []
+    y_pred_train = []
     for inputs, targets in train_dataloader:
         optimizer.zero_grad()
         outputs = model(inputs)
@@ -79,28 +82,46 @@ for epoch in range(num_epochs):
         loss.backward()
         optimizer.step()
         epoch_train_loss += loss.item() * inputs.size(0)
+        y_true_train.extend(targets.cpu().numpy())
+        y_pred_train.extend(outputs.detach().squeeze().cpu().numpy())
     epoch_train_loss /= len(train_dataset)
     
     print(f"Epoch {epoch+1}/{num_epochs}, Train Loss: {epoch_train_loss:.4f}")
+    r2_train = r2_score(y_true_train, y_pred_train)
+    print(f"Epoch {epoch+1}/{num_epochs}, Train R2 Score: {r2_train:.4f}")
 
 # Test loop
 model.eval()
 test_loss = 0.0
+y_true = []
+y_pred = []
 with torch.no_grad():
     for inputs, targets in test_dataloader:
         outputs = model(inputs)
         loss = criterion(outputs.squeeze(), targets)
         test_loss += loss.item() * inputs.size(0)
+        y_true.extend(targets.cpu().numpy())
+        y_pred.extend(outputs.squeeze().cpu().numpy())
 test_loss /= len(test_dataset)
-print(f"Test Loss: {test_loss:.4f}")
+print(f"Test Loss MSE: {test_loss:.4f}")
 
+# Calculate R2 score
+r2 = r2_score(y_true, y_pred)
+print(f"R2 Score: {r2:.4f}")
+# plt.figure()
+# plt.plot(np.array(y_pred) - np.array(y_true))
+# plt.grid('True')
+# plt.show()
 
-# # Save trained model
-# torch.save(model.state_dict(), '2000_reg_5e-1.pth')
+# print(y_pred)
+# print(y_true)
+
+# Save trained model
+torch.save(model.state_dict(), '0reg_1000_epochs.pth')
 
 # Load trained model
-# model.load_state_dict(torch.load('2000_reg_5e-1.pth'))
-# print("regularization = 5e-1")
+# model.load_state_dict(torch.load('testing_coeffs.pth'))
+# # print("regularization = 5e-1")
 # # Display model weights
 # for name, param in model.named_parameters():
 #     print(f"Layer: {name}, Weights: {param.data}")
