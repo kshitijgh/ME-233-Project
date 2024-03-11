@@ -18,7 +18,7 @@ learning_rate = 0.0001
 batch_size = 64
 num_epochs = 1000
 regularization_term = 5e-6
-Lp = 1
+Lp = 0.5
 
 # Custom dataset class
 class CustomDataset(Dataset):
