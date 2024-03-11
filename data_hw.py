@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 # CO2 - Tc is 304 K, Pc is 73.8 bars, rhoc is 467 kg/m3
 
-data_points = 100
+data_points = 50
 
 delta_values = np.zeros(data_points)
 
@@ -47,15 +47,15 @@ input = df.to_numpy()
 input = torch.tensor(input)
 
 a, b = input.shape
-ares_CoolProp = torch.zeros([a,1])
+output = torch.zeros([a,1])
 
 
 for i in range(a):
-    ares_CoolProp[i,0] = PropsSI('alphar', 'T', 304/df.iloc[i, 1], 'D', df.iloc[i, 0]*467, 'CO2')
+    output[i,0] = PropsSI('alphar', 'T', 304/df.iloc[i, 1], 'D', df.iloc[i, 0]*467, 'CO2')
 
 
 ################################# OUTPUT VALUES ##########################
-print(ares_CoolProp)
+print(output)
 ################################# OUTPUT VALUES ##########################
     
 

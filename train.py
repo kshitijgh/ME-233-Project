@@ -5,6 +5,7 @@ from torch.utils.data import DataLoader, Dataset
 from sklearn.preprocessing import StandardScaler
 import numpy as np
 from model_34 import *
+from data_hw import input, output
 
 # Define hyperparameters
 learning_rate = 0.001
@@ -14,15 +15,17 @@ regularization_term = 0.5
 
 # Custom dataset class
 class CustomDataset(Dataset):
-    def __init__(self, file_path):
-        # Load data from file
-        data = np.genfromtxt(file_path, delimiter=',', skip_header=1)
-        self.inputs = data[:2000, 1:]  # Delta and Tau columns
-        self.targets = np.loadtxt('output.txt')[:2000]
+    def __init__(self, input_data, output_data):
+        # # Load data from file
+        # data = np.genfromtxt(file_path, delimiter=',', skip_header=1)
+        # self.inputs = data[:2000, 1:]  # Delta and Tau columns
+        # self.targets = np.loadtxt('output.txt')[:2000]
 
-        # # Standardize inputs
-        # self.scaler = StandardScaler()
-        # self.inputs = self.scaler.fit_transform(self.inputs)
+        # # # Standardize inputs
+        # # self.scaler = StandardScaler()
+        # # self.inputs = self.scaler.fit_transform(self.inputs)
+        self.inputs = input_data
+        self.targets = output_data
 
     def __len__(self):
         return len(self.inputs)
@@ -46,7 +49,7 @@ class CustomLoss(nn.Module):
         return total_loss
 
 # Initialize dataset and dataloader
-dataset = CustomDataset('data.csv')
+dataset = CustomDataset(input, output)
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
 # Initialize model
@@ -73,8 +76,8 @@ criterion = CustomLoss(model, regularization_term)
 # torch.save(model.state_dict(), '2000_reg_5e-1.pth')
 
 # Load trained model
-model.load_state_dict(torch.load('2000_reg_5e-1.pth'))
-print("regularization = 5e-1")
-# Display model weights
-for name, param in model.named_parameters():
-    print(f"Layer: {name}, Weights: {param.data}")
+# model.load_state_dict(torch.load('2000_reg_5e-1.pth'))
+# print("regularization = 5e-1")
+# # Display model weights
+# for name, param in model.named_parameters():
+#     print(f"Layer: {name}, Weights: {param.data}")
