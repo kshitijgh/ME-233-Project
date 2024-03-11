@@ -6,12 +6,16 @@ from sklearn.preprocessing import StandardScaler
 import numpy as np
 from model_34 import *
 from data_hw import input, output
+from sklearn.model_selection import train_test_split
+
+# Split dataset into training, validation, and test sets (70-20-10)
+x_train, x_test, y_train, y_test = train_test_split(input, output, test_size=0.2, random_state=42)
 
 # Define hyperparameters
 learning_rate = 0.001
 batch_size = 64
 num_epochs = 100
-regularization_term = 0.5
+regularization_term = 0.0001
 
 # Custom dataset class
 class CustomDataset(Dataset):
@@ -49,9 +53,14 @@ class CustomLoss(nn.Module):
         return total_loss
 
 # Initialize dataset and dataloader
-dataset = CustomDataset(input, output)
-dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+train_dataset = CustomDataset(x_train, y_train)
+test_dataset = CustomDataset(x_test, y_test)
 
+train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+
+print(x_train.shape)
+print(x_test.shape)
 # Initialize model
 model = MyNetwork(seed=42)
 
@@ -60,17 +69,31 @@ optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 criterion = CustomLoss(model, regularization_term)
 
 # Training loop
-# for epoch in range(num_epochs):
-#     epoch_loss = 0.0
-#     for inputs, targets in dataloader:
-#         optimizer.zero_grad()
-#         outputs = model(inputs)
-#         loss = criterion(outputs.squeeze(), targets)
-#         loss.backward()
-#         optimizer.step()
-#         epoch_loss += loss.item() * inputs.size(0)
-#     epoch_loss /= len(dataset)
-#     print(f"Epoch {epoch+1}/{num_epochs}, Loss: {epoch_loss:.4f}")
+for epoch in range(num_epochs):
+    model.train()
+    epoch_train_loss = 0.0
+    for inputs, targets in train_dataloader:
+        optimizer.zero_grad()
+        outputs = model(inputs)
+        loss = criterion(outputs.squeeze(), targets)
+        loss.backward()
+        optimizer.step()
+        epoch_train_loss += loss.item() * inputs.size(0)
+    epoch_train_loss /= len(train_dataset)
+    
+    print(f"Epoch {epoch+1}/{num_epochs}, Train Loss: {epoch_train_loss:.4f}")
+
+# Test loop
+model.eval()
+test_loss = 0.0
+with torch.no_grad():
+    for inputs, targets in test_dataloader:
+        outputs = model(inputs)
+        loss = criterion(outputs.squeeze(), targets)
+        test_loss += loss.item() * inputs.size(0)
+test_loss /= len(test_dataset)
+print(f"Test Loss: {test_loss:.4f}")
+
 
 # # Save trained model
 # torch.save(model.state_dict(), '2000_reg_5e-1.pth')
