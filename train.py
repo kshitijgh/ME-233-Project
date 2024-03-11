@@ -14,10 +14,11 @@ from matplotlib  import pyplot as plt
 x_train, x_test, y_train, y_test = train_test_split(input, output, test_size=0.2, random_state=42)
 
 # Define hyperparameters
-learning_rate = 0.001
+learning_rate = 0.0001
 batch_size = 64
 num_epochs = 1000
-regularization_term = 0
+regularization_term = 5e-5
+Lp = 0.75
 
 # Custom dataset class
 class CustomDataset(Dataset):
@@ -51,7 +52,7 @@ class CustomLoss(nn.Module):
         mse_loss = nn.functional.mse_loss(output, target.squeeze())
         l1_loss = torch.tensor(0.0)
         for param in self.model.parameters():
-            l1_loss += torch.norm(param, p=1)
+            l1_loss += torch.norm(param, p=Lp)
         total_loss = mse_loss + self.regularization_term * l1_loss
         return total_loss
 
@@ -116,10 +117,14 @@ print(f"R2 Score: {r2:.4f}")
 # print(y_pred)
 # print(y_true)
 
-# Save trained model
-torch.save(model.state_dict(), '0reg_1000_epochs.pth')
+# Print model weights
+for name, param in model.named_parameters():
+    print(f"Layer: {name}, Weights: {param.data}")
 
-# Load trained model
+# # Save trained model
+# torch.save(model.state_dict(), f'reg_' + str(regularization_term) + '.pth')
+
+# # Load trained model
 # model.load_state_dict(torch.load('testing_coeffs.pth'))
 # # print("regularization = 5e-1")
 # # Display model weights
