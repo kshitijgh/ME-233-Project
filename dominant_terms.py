@@ -8,7 +8,7 @@ from pathlib import Path
 import pandas as pd
 
 
-def _terms_extract(model: MyNetwork, terms: int, preds: np.array, output: torch.Tensor) -> tuple[np.array, int]:
+def _terms_extract(model: MyNetwork, terms: int, preds: np.array, pred_output: torch.Tensor) -> tuple[np.array, int]:
     """
     Helper function to actually find the dominant terms and their corresponding indices in the full model activations
     Args:
@@ -40,7 +40,7 @@ def _terms_extract(model: MyNetwork, terms: int, preds: np.array, output: torch.
         preds[:, i] = out.detach().numpy()
 
         # Calculate similarity through dot product between n_if_i and output
-        similarity_met.append(output.dot(preds[:,i])/(np.linalg.norm(preds[:,i])*np.linalg.norm(output)))
+        similarity_met.append(pred_output.dot(preds[:,i])/(np.linalg.norm(preds[:,i])*np.linalg.norm(pred_output)))
 
     similarity_met = np.array(similarity_met)
     final_nterms = 15 # Expected number of dominant terms
@@ -97,7 +97,7 @@ def find_dominant_terms(dirpath: str, input: torch.Tensor, output: torch.Tensor)
         model_weights = model_dict['input_layer.weight'] # Extract trained weights from full model
         
         preds = np.zeros((input.shape[0], terms)) # Store predictions from single weight models
-        indices, n = _terms_extract(model, terms, preds, output) # Get dominant terms and resulting predictions from only one nonzero weight models
+        indices, n = _terms_extract(model, terms, preds, pred_output) # Get dominant terms and resulting predictions from only one nonzero weight models
 
         # Construct a dominant-terms only model and evaluate
         dominant_model_dict = copy.deepcopy(model_dict)
