@@ -1,0 +1,1 @@
+Data can be found in `data.csv`, and the Helmholtz residual values can be found in `output.txt`. There are a total of 10000 datapoints. For the purpose of our project, we used 2500 datapoints directly sampled from the code in `data_hw.py`.
