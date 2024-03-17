@@ -2,25 +2,24 @@ import torch
 import numpy as np
 from data_hw import input, output
 from model_34 import *
-import copy
+import os, copy
 from sklearn.metrics import r2_score
-import os
 from pathlib import Path
 import pandas as pd
 
 
-def _terms_extract(model, terms, preds, output):
+def _terms_extract(model: MyNetwork, terms: int, preds: np.array, output: torch.Tensor) -> tuple[np.array, int]:
     """
     Helper function to actually find the dominant terms and their corresponding indices in the full model activations
     Args:
-    model: The full trained model
-    terms: Number of terms in the full trained model
-    preds: The array to store the outputs from only one nonzero weight models
-    output: Ground truth
+    model (MyNetwork): The full trained model
+    terms (int): Number of terms in the full trained model
+    preds (np.array): The array to store the outputs from only one nonzero weight models
+    output (torch.Tensor): Ground truth
 
     Returns:
-    indices: The indices of the dominant terms from the original full model activations
-    n: Number of dominant terms
+    indices (np.array): The indices of the dominant terms from the original full model activations
+    n (int): Number of dominant terms
     """
     similarity_met = []
     model_dict = model.state_dict()
@@ -31,23 +30,19 @@ def _terms_extract(model, terms, preds, output):
         test_model = MyNetwork(seed=42)
         test_model_dict = copy.deepcopy(model_dict)
         model_plot = torch.zeros_like(model_weights)
-        # print(model_plot.shape)
         model_plot[0,i] = model_weights[0,i] # Since there is only one layer in this model, use (34,) array to store weights
 
         # Construct model with only one non-zero weight and evaluate
         test_model_dict['input_layer.weight'] = model_plot
         test_model.load_state_dict(test_model_dict)
-        # print(type(test_model))
         test_model.eval()
         out = test_model(input).flatten()
         preds[:, i] = out.detach().numpy()
-        # print(f"For term {i}, r2 score: {r2_score(output, preds[:,i])}")
 
         # Calculate similarity through dot product between n_if_i and output
         similarity_met.append(output.dot(preds[:,i])/(np.linalg.norm(preds[:,i])*np.linalg.norm(output)))
 
     similarity_met = np.array(similarity_met)
-    # print(similarity_met)
     final_nterms = 15 # Expected number of dominant terms
 
     # Extract dominant terms by comparing similarity value against threshold
@@ -79,8 +74,6 @@ def find_dominant_terms(dirpath: str, input: torch.Tensor, output: torch.Tensor)
     """
     
     pth_files = [f for f in os.listdir(dirpath) if f[-3:]=='pth']
-    # print(os.getcwd())
-    # print(pth_files)
     output = output.detach().numpy()
     output = output.reshape((output.shape[0],))
 
@@ -107,7 +100,6 @@ def find_dominant_terms(dirpath: str, input: torch.Tensor, output: torch.Tensor)
         indices, n = _terms_extract(model, terms, preds, output) # Get dominant terms and resulting predictions from only one nonzero weight models
 
         # Construct a dominant-terms only model and evaluate
-        # dominant_terms[pth_file] = n
         dominant_model_dict = copy.deepcopy(model_dict)
         dominant_model_weights = torch.zeros_like(model_weights)
         dominant_model_weights[0, indices] = model_weights[0, indices]
@@ -117,7 +109,6 @@ def find_dominant_terms(dirpath: str, input: torch.Tensor, output: torch.Tensor)
         dominant_model.load_state_dict(dominant_model_dict)
         dominant_out = dominant_model(input).detach().numpy()
         
-        # np.savetxt(f"dominant_output_{pth_file[:-4]}.txt", dominant_out)
         print(f"r2 score with dominant-only model: {r2_score(output, dominant_out)}")
         print("*"*50)
 
@@ -127,5 +118,6 @@ def find_dominant_terms(dirpath: str, input: torch.Tensor, output: torch.Tensor)
     print(df.head())
     df.to_csv("./output.csv")
 
-dirpath = Path("./saved_models")
+# path = path/to/saved_models
+dirpath = Path(path)
 find_dominant_terms(dirpath, input, output)
